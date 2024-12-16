@@ -27,7 +27,8 @@
 					<span asp-validation-for="ConfirmPassword"></span>
 				</div>
 				<select asp-for="Role" asp-items="@(new SelectList(Model.userRoleItems, nameof(UserRoleItem.Id), nameof(UserRoleItem.Name)))">
-					<option value="">Pick a role</option>
+					<option value=""> -- Pick a role -- </option>
+
 				</select>
 				<span asp-validation-for="Role" class="text-danger"></span>
 				<div class="row">
