@@ -12,6 +12,11 @@
 			<form asp-action="Register" method="POST">
 				<div asp-validation-summary="ModelOnly"></div>
 				<div class="mb-1">
+					<label asp-for="Email"></label>
+					<input asp-for="Email" class="form-control" />
+					<span asp-validation-for="Email"></span>
+				</div>
+				<div class="mb-1">
 					<label asp-for="Username"></label>
 					<input asp-for="Username" class="form-control" />
 					<span asp-validation-for="Username"></span>
@@ -26,17 +31,17 @@
 					<input asp-for="ConfirmPassword" class="form-control" />
 					<span asp-validation-for="ConfirmPassword"></span>
 				</div>
-				<select asp-for="Role" asp-items="@(new SelectList(Model.userRoleItems, nameof(UserRoleItem.Id), nameof(UserRoleItem.Name)))">
+				<select asp-for="Role" asp-items="@(new SelectList(UserRoleGetter.GetList(), nameof(UserRoleItem.Id), nameof(UserRoleItem.Name)))">
 					<option value=""> -- Pick a role -- </option>
 
 				</select>
 				<span asp-validation-for="Role" class="text-danger"></span>
 				<div class="row">
 					<div class="col-8">
-						<a asp-action="Register">Don't have acc?</a>
+						<a asp-action="Login">Have you got an acc?</a>
 					</div>
 					<div class="col-4">
-						<input type="submit" value="Login" class="btn btn-primary btn-sm" />
+						<input type="submit" value="Register" class="btn btn-primary btn-sm" />
 					</div>
 				</div>
 

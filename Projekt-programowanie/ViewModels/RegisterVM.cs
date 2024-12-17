@@ -8,7 +8,7 @@ namespace Projekt_programowanie.ViewModels
         [Required(ErrorMessage = "Username required")]
         public string? Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email required")]
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
@@ -19,8 +19,7 @@ namespace Projekt_programowanie.ViewModels
         [Compare("Password", ErrorMessage = "Password must match")]
         public string? ConfirmPassword { get; set; }
 
-        public int? Role {  get; set; }
-
-        public List<UserRoleItem> userRoleItems { get; set; }
+		[Required(ErrorMessage = "Role is required")]
+		public int? Role {  get; set; }
     }
 }
