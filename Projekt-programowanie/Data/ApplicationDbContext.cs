@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Projekt_programowanie.Models;
 using ProjektProgramowanie.Models;
 
-namespace Projekt_programowanie.Data
+namespace ProjektProgramowanie.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

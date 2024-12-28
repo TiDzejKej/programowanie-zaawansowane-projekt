@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjektProgramowanie.Models;
-using Projekt_programowanie.Data;
+using ProjektProgramowanie.Data;
 
 namespace ProjektProgramowanie.Controllers
 {

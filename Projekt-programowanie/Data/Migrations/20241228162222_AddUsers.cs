@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Projekt_programowanie.Data.Migrations
+namespace ProjektProgramowanie.Data.Migrations
 {
     /// <inheritdoc />
     public partial class AddUsers : Migration

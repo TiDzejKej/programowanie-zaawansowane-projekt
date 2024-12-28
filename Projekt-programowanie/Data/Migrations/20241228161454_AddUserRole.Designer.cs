@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Projekt_programowanie.Data;
+using ProjektProgramowanie.Data;
 
 #nullable disable
 
-namespace Projekt_programowanie.Data.Migrations
+namespace ProjektProgramowanie.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20241228161454_AddUserRole")]
