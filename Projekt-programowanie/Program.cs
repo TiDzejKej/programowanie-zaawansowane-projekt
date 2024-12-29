@@ -13,6 +13,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+	.AddRoles<IdentityRole>()
 	.AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
@@ -41,5 +42,54 @@ app.MapControllerRoute(
 	name: "default",
 	pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+using(var scope = app.Services.CreateScope())
+{
+	var services = scope.ServiceProvider;
+	var context = services.GetRequiredService<ApplicationDbContext>();
+	var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+	var roles = new[] { "admin", "student", "lecturer", "employee" };
+
+	foreach (var role in roles)
+	{
+		if (!await roleManager.RoleExistsAsync(role))
+		{
+			await roleManager.CreateAsync(new IdentityRole(role));
+		}
+	}
+
+}
+using (var scope = app.Services.CreateScope())
+{
+	var services = scope.ServiceProvider;
+	var context = services.GetRequiredService<ApplicationDbContext>();
+	var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+
+	string email = "admin@admin.com";
+	string password = "qweASD1231410!";
+
+	if (await userManager.FindByEmailAsync(email) == null)
+	{
+		var user = new ApplicationUser()
+		{
+			UserName = "admin",
+			Email = "admin@admin.com",
+			FirstName = "Admin",
+			LastName = "Admin",
+			Adress = "Admin",
+			PhoneNumber = "123456789",
+			CreatedAt = DateTime.Now,
+			EmailConfirmed = true
+		};
+		user.UserName = user.Email;
+		user.Email = user.Email;
+
+		await userManager.CreateAsync(user, password);
+		await userManager.AddToRoleAsync(user, "admin");
+		
+	}
+}
+
 
 app.Run();

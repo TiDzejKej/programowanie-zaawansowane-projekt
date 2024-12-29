@@ -12,8 +12,8 @@ using ProjektProgramowanie.Data;
 namespace ProjektProgramowanie.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241228221327_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241229135003_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,32 +50,6 @@ namespace ProjektProgramowanie.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "51ef5b16-4c18-4fc4-8669-eb194f0c4c76",
-                            Name = "admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "c4b15906-8f19-444f-a62d-80a996b34360",
-                            Name = "student",
-                            NormalizedName = "STUDENT"
-                        },
-                        new
-                        {
-                            Id = "ad590686-da5a-450d-acd9-f3645edf45cb",
-                            Name = "lecturer",
-                            NormalizedName = "LECTURER"
-                        },
-                        new
-                        {
-                            Id = "2a34ef65-263c-4c22-858d-3afca0c701a5",
-                            Name = "employee",
-                            NormalizedName = "EMPLOYEE"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

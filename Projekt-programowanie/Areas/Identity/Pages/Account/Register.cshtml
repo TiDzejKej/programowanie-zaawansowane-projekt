@@ -6,6 +6,12 @@
 
 <div class="row">
     <div class="col-lg-6 mx-auto">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h3 class="text-center mb-3 display-5">Add new user</h3>
             <hr />
@@ -44,6 +50,11 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Input.Role" class="form-control" asp-items="Model.Roles"></select>
+                <label asp-for="Input.Role">Select Role</label>
+                <span asp-validation-for="Input.Role" class="text-danger"></span>
             </div>
             <div class="row mb-3">
                 <div class="offset-sm-4 col-sm-4 d-grid">
