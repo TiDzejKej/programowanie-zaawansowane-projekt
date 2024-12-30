@@ -1,20 +1,13 @@
 ﻿@model ProjektProgramowanie.Models.UserListViewModel
 
-@{
-    ViewData["Title"] = "Lista użytkowników";
-}
-
-<h2 class="text-center mb-3 display-5">Users list</h2>
-
-
+<h1>User List</h1>
 <table class="table">
     <thead>
         <tr>
-            <th>Username</th>
-            <th>Email</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Address</th>
             <th>Created At</th>
             <th>Roles</th>
             <th>Actions</th>
@@ -24,24 +17,25 @@
         @foreach (var user in Model.Users)
         {
             <tr>
-                <td>@user.UserName</td>
-                <td>@user.Email</td>
                 <td>@user.FirstName</td>
                 <td>@user.LastName</td>
-                <td>@user.PhoneNumber</td>
-                <td>@user.CreatedAt</td>
+                <td>@user.Email</td>
+                <td>@user.Adress</td>
+                <td>@user.CreatedAt.ToString("yyyy-MM-dd")</td>
                 <td>
-                    @foreach (var role in Model.UserRoles[user.Id])
+                    @if (Model.UserRoles.ContainsKey(user.Id))
                     {
-                        <span class="badge bg-secondary">@role</span>
+                        @string.Join(", ", Model.UserRoles[user.Id])
+                    }
+                    else
+                    {
+                        <span>No Roles</span>
                     }
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@user.Id" class="btn btn-danger">Delete</a>
+                    <a asp-controller="Users" asp-action="Details" asp-route-id="@user.Id" class="btn btn-primary">Details</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
