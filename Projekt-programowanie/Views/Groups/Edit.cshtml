@@ -1,0 +1,21 @@
+﻿@model ProjektProgramowanie.Models.GroupEditViewModel
+
+<h1>Edit Group</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label asp-for="Name">Group Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="TeacherId">Teacher</label>
+        <select asp-for="TeacherId" asp-items="Model.Teachers" class="form-control"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="SelectedStudentIds">Students</label>
+        <select asp-for="SelectedStudentIds" asp-items="Model.Students" multiple class="form-control"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="@Url.Action("Index", "Groups")" class="btn btn-secondary">Cancel</a>
+</form>

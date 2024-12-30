@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjektProgramowanie.Data;
 
@@ -11,9 +12,11 @@ using ProjektProgramowanie.Data;
 namespace ProjektProgramowanie.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241230145657_AddLessonModel")]
+    partial class AddLessonModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,19 +25,19 @@ namespace ProjektProgramowanie.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ApplicationUserGroup", b =>
+            modelBuilder.Entity("ApplicationUserLesson", b =>
                 {
-                    b.Property<int>("GroupsJoinedId")
+                    b.Property<int>("LessonsAttendedId")
                         .HasColumnType("int");
 
                     b.Property<string>("StudentsId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("GroupsJoinedId", "StudentsId");
+                    b.HasKey("LessonsAttendedId", "StudentsId");
 
                     b.HasIndex("StudentsId");
 
-                    b.ToTable("GroupStudents", (string)null);
+                    b.ToTable("LessonStudents", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -251,30 +254,6 @@ namespace ProjektProgramowanie.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ProjektProgramowanie.Models.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("TeacherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("Groups");
-                });
-
             modelBuilder.Entity("ProjektProgramowanie.Models.Lesson", b =>
                 {
                     b.Property<int>("Id")
@@ -290,11 +269,12 @@ namespace ProjektProgramowanie.Migrations
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("TeacherId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -302,16 +282,16 @@ namespace ProjektProgramowanie.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("Lessons");
                 });
 
-            modelBuilder.Entity("ApplicationUserGroup", b =>
+            modelBuilder.Entity("ApplicationUserLesson", b =>
                 {
-                    b.HasOne("ProjektProgramowanie.Models.Group", null)
+                    b.HasOne("ProjektProgramowanie.Models.Lesson", null)
                         .WithMany()
-                        .HasForeignKey("GroupsJoinedId")
+                        .HasForeignKey("LessonsAttendedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -373,10 +353,10 @@ namespace ProjektProgramowanie.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProjektProgramowanie.Models.Group", b =>
+            modelBuilder.Entity("ProjektProgramowanie.Models.Lesson", b =>
                 {
                     b.HasOne("ProjektProgramowanie.Models.ApplicationUser", "Teacher")
-                        .WithMany("GroupsLed")
+                        .WithMany("LessonsTaught")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -384,20 +364,9 @@ namespace ProjektProgramowanie.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("ProjektProgramowanie.Models.Lesson", b =>
-                {
-                    b.HasOne("ProjektProgramowanie.Models.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-                });
-
             modelBuilder.Entity("ProjektProgramowanie.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("GroupsLed");
+                    b.Navigation("LessonsTaught");
                 });
 #pragma warning restore 612, 618
         }

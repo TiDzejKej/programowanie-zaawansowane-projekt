@@ -10,5 +10,9 @@ namespace ProjektProgramowanie.Models
 		public string? Adress { get; set; }
 		public DateTime CreatedAt { get; set; }
 
-	}
+        public ICollection<Group> GroupsLed { get; set; } = new List<Group>();
+
+        public ICollection<Group> GroupsJoined { get; set; } = new List<Group>();
+
+    }
 }

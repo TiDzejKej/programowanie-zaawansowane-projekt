@@ -1,0 +1,29 @@
+﻿@model ProjektProgramowanie.Models.GroupEditViewModel
+
+<h1>Create Group</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Name">Group Name</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="TeacherId">Teacher</label>
+        <select asp-for="TeacherId" asp-items="Model.Teachers" class="form-control">
+            <option value="">-- Select Teacher --</option>
+        </select>
+        <span asp-validation-for="TeacherId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedStudentIds">Students</label>
+        <select asp-for="SelectedStudentIds" asp-items="Model.Students" class="form-control" multiple>
+        </select>
+        <span asp-validation-for="SelectedStudentIds" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="@Url.Action("Index", "Groups")" class="btn btn-secondary">Cancel</a>
+</form>

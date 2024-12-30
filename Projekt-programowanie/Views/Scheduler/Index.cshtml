@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Scheduler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="scheduler"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var teacherList = [];
+
+        // Pobierz listę nauczycieli z serwera
+        fetch('/Scheduler/GetTeachers')
+            .then(response => response.json())
+            .then(data => {
+                teacherList = data; // Zapisz listę nauczycieli do późniejszego użytku
+            });
+
+        var scheduleObj = new ej.schedule.Schedule({
+            height: '550px',
+            selectedDate: new Date(),
+            eventSettings: {
+                dataSource: []
+            },
+            popupOpen: function (args) {
+                if (args.type === "Editor") {
+                    var formElement = args.element.querySelector('.e-schedule-form');
+
+               
+                    var teacherField = formElement.querySelector('.custom-teacher-field');
+                    if (teacherField) {
+                        teacherField.remove();
+                    }
+
+                    var container = document.createElement('div');
+                    container.className = 'e-field custom-teacher-field';
+                    container.innerHTML = `
+                            <label for="TeacherId">Teacher</label>
+                            <select id="TeacherId" class="e-control e-dropdownlist">
+                                ${teacherList.map(teacher => `<option value="${teacher.Id}">${teacher.Name}</option>`).join('')}
+                            </select>
+                        `;
+
+                    // Dodaj element do formularza
+                    formElement.appendChild(container);
+                }
+            },
+            actionBegin: function (args) {
+                if (args.requestType === 'eventCreate') {
+                    var data = args.data[0];
+                    var teacherId = document.getElementById('TeacherId').value;
+
+                    fetch('/Scheduler/AddLesson', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            Title: data.Subject,
+                            StartTime: data.StartTime,
+                            EndTime: data.EndTime,
+                            Description: data.Description || "",
+                            TeacherId: teacherId
+                        })
+                    }).then(response => response.json())
+                        .then(result => {
+                            if (result.success) {
+                                alert(result.message);
+                            } else {
+                                alert("Failed to add lesson");
+                            }
+                        });
+                }
+            }
+        });
+        scheduleObj.appendTo('#scheduler');
+    });
+</script>
