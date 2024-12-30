@@ -3,75 +3,186 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div id="scheduler"></div>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var teacherList = [];
+document.addEventListener("DOMContentLoaded", function () {
+    var groupList = [];
 
-        // Pobierz listę nauczycieli z serwera
-        fetch('/Scheduler/GetTeachers')
-            .then(response => response.json())
-            .then(data => {
-                teacherList = data; // Zapisz listę nauczycieli do późniejszego użytku
-            });
-
-        var scheduleObj = new ej.schedule.Schedule({
-            height: '550px',
-            selectedDate: new Date(),
-            eventSettings: {
-                dataSource: []
-            },
-            popupOpen: function (args) {
-                if (args.type === "Editor") {
-                    var formElement = args.element.querySelector('.e-schedule-form');
-
-               
-                    var teacherField = formElement.querySelector('.custom-teacher-field');
-                    if (teacherField) {
-                        teacherField.remove();
-                    }
-
-                    var container = document.createElement('div');
-                    container.className = 'e-field custom-teacher-field';
-                    container.innerHTML = `
-                            <label for="TeacherId">Teacher</label>
-                            <select id="TeacherId" class="e-control e-dropdownlist">
-                                ${teacherList.map(teacher => `<option value="${teacher.Id}">${teacher.Name}</option>`).join('')}
-                            </select>
-                        `;
-
-                    // Dodaj element do formularza
-                    formElement.appendChild(container);
-                }
-            },
-            actionBegin: function (args) {
-                if (args.requestType === 'eventCreate') {
-                    var data = args.data[0];
-                    var teacherId = document.getElementById('TeacherId').value;
-
-                    fetch('/Scheduler/AddLesson', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            Title: data.Subject,
-                            StartTime: data.StartTime,
-                            EndTime: data.EndTime,
-                            Description: data.Description || "",
-                            TeacherId: teacherId
-                        })
-                    }).then(response => response.json())
-                        .then(result => {
-                            if (result.success) {
-                                alert(result.message);
-                            } else {
-                                alert("Failed to add lesson");
-                            }
-                        });
-                }
-            }
+    fetch('/Scheduler/GetGroups')
+        .then(response => response.json())
+        .then(data => {
+            groupList = data;
         });
-        scheduleObj.appendTo('#scheduler');
+
+    var scheduleObj = new ej.schedule.Schedule({
+        height: '550px',
+        selectedDate: new Date(),
+        timezone: 'Europe/Paris',
+        eventSettings: {
+            dataSource: [],
+            fields: {
+                id: 'Id',
+                subject: { name: 'Subject' },
+                startTime: { name: 'StartTime' },
+                endTime: { name: 'EndTime' },
+                description: { name: 'Description' },
+                groupId: { name: 'GroupId' } // Dodanie niestandardowego pola
+            }
+        },
+        popupOpen: function (args) {
+            if (args.type === "QuickInfo") {
+                args.cancel = true;
+
+                var scheduleObj = this;
+                scheduleObj.openEditor(args.data, args.target.classList.contains('e-appointment') ? 'Save' : 'Add');
+            }
+
+            if (args.type === "Editor") {
+                var formElement = args.element.querySelector('.e-schedule-form');
+
+                // Ukrywanie domyślnych pól
+                var locationField = formElement.querySelector('.e-location-container');
+                if (locationField) locationField.style.display = 'none';
+
+                var allDayField = formElement.querySelector('.e-all-day-time-zone-row');
+                if (allDayField) allDayField.style.display = 'none';
+
+                var timeZoneField = formElement.querySelector('.e-time-zone-container');
+                if (timeZoneField) timeZoneField.style.display = 'none';
+
+                var repeatField = formElement.querySelector('.e-recurrenceeditor');
+                if (repeatField) repeatField.style.display = 'none';
+
+                // Dodanie pola dla grupy
+                var groupField = formElement.querySelector('.custom-group-field');
+                if (groupField) {
+                    groupField.remove();
+                }
+
+                var container = document.createElement('div');
+                container.className = 'e-field custom-group-field';
+                container.setAttribute('data-name', 'GroupId');
+                container.innerHTML = `
+                    <div id="GroupId"></div>
+                `;
+                formElement.appendChild(container);
+                (args.data.GroupId != "undefined" && args.data.GroupId != null) ? args.data.GroupId = parseInt(args.data.GroupId) : '';
+                // Inicjalizacja DropDownList z wartością domyślną
+                var groupDropdown = new ej.dropdowns.DropDownList({
+                    dataSource: groupList.map(group => ({
+                        value: group.id,
+                        text: `(Grupa: ${group.name}) (Teacher: ${group.teacher})`
+                    })),
+                    fields: { text: 'text', value: 'value' },
+                    placeholder: "Select Group",
+                    value: args.data.GroupId || null, // Ustawienie domyślnej wartości
+                    allowFiltering: true // Umożliwia filtrowanie (opcjonalne)
+                });
+                groupDropdown.appendTo('#GroupId');
+
+                // Debugowanie wartości
+                console.log("Editing Event GroupId:", args.data.GroupId);
+            }
+        }
+        ,
+        actionBegin: function (args) {
+            if (args.requestType === 'eventCreate') {
+                var data = args.data[0];
+                var groupId = document.getElementById('GroupId').value;
+
+                data.GroupId = groupId;
+
+                fetch('/Scheduler/AddLesson', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Title: data.Subject,
+                        StartTime: new Date(data.StartTime).toISOString(),
+                        EndTime: new Date(data.EndTime).toISOString(),
+                        Description: data.Description || "",
+                        GroupId: data.GroupId
+                    })
+                }).then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            alert(result.message);
+                            scheduleObj.refresh();
+                        } else {
+                            alert("Failed to add lesson");
+                        }
+                    });
+            }
+
+            if (args.requestType === 'eventChange') {
+                var updatedEvent = args.data;
+                console.log(updatedEvent);
+                // Pobierz wartość GroupId, jeśli brakuje
+                if (!updatedEvent.GroupId || updatedEvent.GroupId === "undefined") {
+                    var groupId = document.getElementById('GroupId_hidden')?.value;
+                    updatedEvent.GroupId = groupId;
+                }
+                console.log(updatedEvent);
+
+                fetch('/Scheduler/UpdateLesson', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Id: updatedEvent.Id,
+                        Title: updatedEvent.Subject,
+                        StartTime: new Date(updatedEvent.StartTime).toISOString(),
+                        EndTime: new Date(updatedEvent.EndTime).toISOString(),
+                        Description: updatedEvent.Description || "",
+                        GroupId: updatedEvent.GroupId
+                    })
+                }).then(response => response.json())
+                    .then(result => {
+                        if (!result.success) {
+                            alert("Failed to update lesson: " + result.message);
+                            scheduleObj.refresh();
+                        }
+                    });
+            }
+
+            if (args.requestType === 'eventRemove') {
+                var deletedEvent = args.data[0];
+
+                fetch('/Scheduler/DeleteLesson', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        Id: deletedEvent.Id
+                    })
+                }).then(response => response.json())
+                    .then(result => {
+                        if (!result.success) {
+                            alert("Failed to delete lesson: " + result.message);
+                            scheduleObj.refresh();
+                        }
+                    });
+            }
+        }
     });
+
+    fetch('/Scheduler/GetLessons')
+        .then(response => response.json())
+        .then(data => {
+            let mappedData = data.map(event => ({
+                Id: event.id,
+                Subject: event.title,
+                StartTime: new Date(event.startTime),
+                EndTime: new Date(event.endTime),
+                Description: event.description,
+                GroupId: event.groupId
+            }));
+            scheduleObj.eventSettings.dataSource = mappedData;
+        });
+
+    scheduleObj.appendTo('#scheduler');
+});
+
 </script>

@@ -21,7 +21,7 @@ namespace ProjektProgramowanie.Controllers
         public async Task<IActionResult> GetGroups()
         {
             var groups = await _context.Groups
-                .Include(g => g.Teacher) 
+                .Include(g => g.Teacher)
                 .Include(g => g.Students)
                 .Select(g => new
                 {
@@ -61,23 +61,14 @@ namespace ProjektProgramowanie.Controllers
         [HttpPost]
         public async Task<IActionResult> AddLesson([FromBody] LessonViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Invalid data");
-            }
+            var utcPlusOneStart = model.StartTime.AddHours(1);
+            var utcPlusOneEnd = model.EndTime.AddHours(1);
 
-            var group = await _context.Groups.FindAsync(model.GroupId);
-            if (group == null)
-            {
-                return NotFound("Group not found");
-            }
-
-            // Dodaj nowe zajęcia
             var lesson = new Lesson
             {
                 Title = model.Title,
-                StartTime = model.StartTime,
-                EndTime = model.EndTime,
+                StartTime = utcPlusOneStart,
+                EndTime = utcPlusOneEnd,
                 Description = model.Description,
                 GroupId = model.GroupId
             };
@@ -85,16 +76,114 @@ namespace ProjektProgramowanie.Controllers
             _context.Lessons.Add(lesson);
             await _context.SaveChangesAsync();
 
-            return Ok(new { success = true, message = "Dodano nowe zajęcia!" });
+            return Json(new { success = true, message = "Lesson added successfully!" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateLesson([FromBody] LessonViewModel model)
+        {
+            if (model == null)
+            {
+                return Json(new { success = false, message = "Invalid request data." });
+            }
+            var lesson = await _context.Lessons.FindAsync(model.Id);
+            if (lesson == null)
+            {
+                return Json(new { success = false, message = "Lesson not found." });
+            }
+
+            var utcPlusOneStart = model.StartTime.AddHours(1);
+            var utcPlusOneEnd = model.EndTime.AddHours(1);
+
+            lesson.Title = model.Title;
+            lesson.StartTime = utcPlusOneStart;
+            lesson.EndTime = utcPlusOneEnd;
+            lesson.Description = model.Description;
+            lesson.GroupId = model.GroupId;
+
+            _context.Lessons.Update(lesson);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Lesson updated successfully!" });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ValidateLesson([FromBody] LessonValidationViewModel model)
+        {
+            var conflictingLessons = await _context.Lessons
+                .Where(l => l.GroupId == model.GroupId && l.Id != model.Id &&
+                            ((model.StartTime >= l.StartTime && model.StartTime < l.EndTime) ||
+                             (model.EndTime > l.StartTime && model.EndTime <= l.EndTime)))
+                .ToListAsync();
+
+            if (conflictingLessons.Any())
+            {
+                return Json(new { success = false, message = "Time conflict detected for the same group." });
+            }
+
+            return Json(new { success = true });
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteLesson([FromBody] LessonDeleteViewModel model)
+        {
+            if (model == null)
+            {
+                return Json(new { success = false, message = "Invalid request data." });
+            }
+            var lesson = await _context.Lessons.FindAsync(model.Id);
+
+            if (lesson == null)
+            {
+                return Json(new { success = false, message = "Lesson not found." });
+            }
+
+            _context.Lessons.Remove(lesson);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Lesson deleted successfully." });
+        }
+
+        public class LessonDeleteViewModel
+        {
+            public int Id { get; set; }
+        }
+
+
+        public class LessonValidationViewModel
+        {
+            public int Id { get; set; }
+            public DateTime StartTime { get; set; }
+            public DateTime EndTime { get; set; }
+            public int GroupId { get; set; }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetLessons()
+        {
+            var lessons = await _context.Lessons.ToListAsync();
+
+            var result = lessons.Select(l => new
+            {
+                Id = l.Id,
+                Title = l.Title,
+                StartTime = l.StartTime,
+                EndTime = l.EndTime,
+                Description = l.Description,
+                GroupId = l.GroupId
+            });
+
+            return Json(result);
         }
 
         public class LessonViewModel
         {
+            public int Id { get; set; }
             public string Title { get; set; }
             public DateTime StartTime { get; set; }
             public DateTime EndTime { get; set; }
             public string Description { get; set; }
-            public int GroupId { get; set; } 
+            public int GroupId { get; set; }
         }
     }
 }
