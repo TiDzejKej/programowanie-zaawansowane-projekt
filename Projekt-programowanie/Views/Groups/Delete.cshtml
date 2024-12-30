@@ -1,57 +1,49 @@
-﻿@model ProjektProgramowanie.Models.ApplicationUser
+﻿@model ProjektProgramowanie.Models.Group
 
 @{
-    ViewData["Title"] = "Usuń grupę";
+    ViewData["Title"] = "Delete Group";
 }
 
-<h1>Usuń użytkownika</h1>
+<h1>Delete Group</h1>
 
-<h4>ApplicationUser</h4>
-<hr />
-<div>
-    <h4>Czy na pewno chcesz usunąć tego użytkownika?</h4>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Adress)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Adress)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-    </dl>
+<p>Are you sure you want to delete the group <strong>@Model.Name</strong>?</p>
 
-    <form asp-action="DeleteConfirmed">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Usuń" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
-    </form>
-</div>
+<dl class="row">
+    <dt class="col-sm-2">Group Name</dt>
+    <dd class="col-sm-10">@Model.Name</dd>
+
+    <dt class="col-sm-2">Teacher</dt>
+    <dd class="col-sm-10">
+        @if (Model.Teacher != null)
+        {
+            @($"{Model.Teacher.FirstName} {Model.Teacher.LastName}")
+        }
+        else
+        {
+            <span class="text-muted">No teacher assigned</span>
+        }
+    </dd>
+
+    <dt class="col-sm-2">Students</dt>
+    <dd class="col-sm-10">
+        @if (Model.Students.Any())
+        {
+            <ul>
+                @foreach (var student in Model.Students)
+                {
+                    <li>@($"{student.FirstName} {student.LastName}")</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <span class="text-muted">No students assigned</span>
+        }
+    </dd>
+</dl>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

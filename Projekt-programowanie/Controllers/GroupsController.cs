@@ -108,10 +108,13 @@ namespace ProjektProgramowanie.Controllers
             return View(group);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteConfirmed")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var group = await _context.Groups.FindAsync(id);
+            var group = await _context.Groups
+                .Include(g => g.Students)
+                .Include(g => g.Teacher)
+                .FirstOrDefaultAsync(g => g.Id == id);
 
             if (group == null)
             {
