@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace ProjektProgramowanie.Controllers
 {
-	[Authorize(Roles = "admin")]
+	[Authorize(Roles = "admin, employee")]
 	public class UsersController : Controller
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
@@ -103,7 +103,7 @@ namespace ProjektProgramowanie.Controllers
 			}
 			return View(model);
 		}
-
+		[Authorize(Roles = "admin")]
 		public async Task<IActionResult> Delete(string id)
 		{
 			var user = await _userManager.FindByIdAsync(id);
@@ -113,8 +113,9 @@ namespace ProjektProgramowanie.Controllers
 			}
 			return View(user);
 		}
-
+		
 		[HttpPost, ActionName("Delete")]
+		[Authorize(Roles = "admin")]
 		public async Task<IActionResult> DeleteConfirmed(string id)
 		{
 			var user = await _userManager.FindByIdAsync(id);
