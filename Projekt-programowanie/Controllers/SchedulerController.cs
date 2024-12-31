@@ -28,7 +28,6 @@ namespace ProjektProgramowanie.Controllers
                 .Include(g => g.Teacher)
                 .Include(g => g.Students);
 
-            // Filtr dla roli Lecturer
             if (User.IsInRole("lecturer"))
             {
                 groupsQuery = groupsQuery.Where(g => g.TeacherId == userId);
@@ -65,7 +64,8 @@ namespace ProjektProgramowanie.Controllers
                 StartTime = utcPlusOneStart,
                 EndTime = utcPlusOneEnd,
                 Description = model.Description,
-                GroupId = model.GroupId
+                GroupId = model.GroupId,
+                IsClosed = false
             };
 
             _context.Lessons.Add(lesson);
@@ -96,6 +96,7 @@ namespace ProjektProgramowanie.Controllers
             lesson.EndTime = utcPlusOneEnd;
             lesson.Description = model.Description;
             lesson.GroupId = model.GroupId;
+            lesson.IsClosed = false;
 
             _context.Lessons.Update(lesson);
             await _context.SaveChangesAsync();
@@ -169,7 +170,7 @@ namespace ProjektProgramowanie.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "admin, employee, lecturer")]
+        [Authorize(Roles = "admin, employee, lecturer, student")]
         public async Task<IActionResult> GetLessons()
         {
             var userId = _userManager.GetUserId(User);
@@ -183,6 +184,11 @@ namespace ProjektProgramowanie.Controllers
                 lessonsQuery = lessonsQuery.Where(l => l.Group.TeacherId == userId);
             }
 
+            if(User.IsInRole("student"))
+            {
+                lessonsQuery = lessonsQuery.Where(l => l.Group.Students.Any(s => s.Id == userId));
+            }
+
             var lessons = await lessonsQuery.ToListAsync();
 
             var result = lessons.Select(l => new
@@ -194,10 +200,49 @@ namespace ProjektProgramowanie.Controllers
                 Description = l.Description,
                 GroupId = l.GroupId,
                 GroupName = l.Group.Name,
-                Teacher = $"{l.Group.Teacher.FirstName} {l.Group.Teacher.LastName}"
+                Teacher = $"{l.Group.Teacher.FirstName} {l.Group.Teacher.LastName}",
+                IsClosed = l.IsClosed
             });
 
             return Json(result);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "lecturer")]
+        public async Task<IActionResult> CloseLesson([FromBody] LessonCloseViewModel model)
+        {
+            if (model == null)
+            {
+                return Json(new { success = false, message = "Invalid request data." });
+            }
+
+            var userId = _userManager.GetUserId(User);
+
+            var lesson = await _context.Lessons
+                .Include(l => l.Group)
+                .FirstOrDefaultAsync(l => l.Id == model.LessonId);
+
+            if (lesson == null)
+            {
+                return Json(new { success = false, message = "Lesson not found." });
+            }
+
+            if (lesson.Group.TeacherId != userId)
+            {
+                return Json(new { success = false, message = "You are not authorized to close this lesson." });
+            }
+
+            lesson.IsClosed = true;
+
+            _context.Lessons.Update(lesson);
+            await _context.SaveChangesAsync();
+
+            return Json(new { success = true, message = "Lesson closed successfully." });
+        }
+
+        public class LessonCloseViewModel
+        {
+            public int LessonId { get; set; }
         }
 
         public class LessonViewModel
@@ -208,11 +253,12 @@ namespace ProjektProgramowanie.Controllers
             public DateTime EndTime { get; set; }
             public string Description { get; set; }
             public int GroupId { get; set; }
+
         }
 
         public string GetRole()
         {
-            return User.IsInRole("admin") ? "admin" : User.IsInRole("employee") ? "employee" : "lecturer";
+            return User.IsInRole("admin") ? "admin" : User.IsInRole("employee") ? "employee" : User.IsInRole("lecturer") ?  "lecturer" : "student";
         }
     }
 }
