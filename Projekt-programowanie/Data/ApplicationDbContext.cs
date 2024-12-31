@@ -14,8 +14,9 @@ namespace ProjektProgramowanie.Data
 
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Group> Groups { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder builder)
+		public DbSet<ProjektProgramowanie.Models.Survey> Survey { get; set; } = default!;
+		public DbSet<ProjektProgramowanie.Models.Question> Question { get; set; } = default!;
+		protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
