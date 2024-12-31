@@ -11,6 +11,17 @@ document.addEventListener("DOMContentLoaded", function () {
     const userRole = "@Model";
     var groupList = [];
     let isUpdatingEvent = false;
+    setTimeout(() => {
+        const element = document.querySelector('a.e-license');
+if (element) {
+    const parentElement = element.parentElement;
+    parentElement.remove();
+} 
+
+
+    }, 0);
+    
+
     fetch('/Scheduler/GetGroups')
         .then(response => response.json())
         .then(data => {
@@ -29,21 +40,34 @@ document.addEventListener("DOMContentLoaded", function () {
                 startTime: { name: 'StartTime' },
                 endTime: { name: 'EndTime' },
                 description: { name: 'Description' },
-                groupId: { name: 'GroupId' } // Dodanie niestandardowego pola
+                groupId: { name: 'GroupId' },
+                isClosed: { name: 'IsClosed' },
+
             }
         },
+        eventRendered: function (args) {
+            if (args.data.IsClosed) {
+                args.element.style.backgroundColor = '#f54949';
+                args.element.style.color = 'white';
+              }
+              else
+              {
+                   args.element.style.backgroundColor = '#3f51b5';
+                  args.element.style.color = 'white';
+              }
+        },
         popupOpen: function (args) {
+            document.querySelector(".e-button-finish-task")?.remove();
+            var scheduleObj = this;
             if (args.type === "QuickInfo") {
                 args.cancel = true;
 
-                var scheduleObj = this;
                 scheduleObj.openEditor(args.data, args.target.classList.contains('e-appointment') ? 'Save' : 'Add');
             }
 
             if (args.type === "Editor") {
                 var formElement = args.element.querySelector('.e-schedule-form');
-
-                // Ukrywanie domyślnych pól
+               
                 var locationField = formElement.querySelector('.e-location-container');
                 if (locationField) locationField.style.display = 'none';
 
@@ -56,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 var repeatField = formElement.querySelector('.e-recurrenceeditor');
                 if (repeatField) repeatField.style.display = 'none';
 
-                // Dodanie pola dla grupy
                 var groupField = formElement.querySelector('.custom-group-field');
                 if (groupField) {
                     groupField.remove();
@@ -82,6 +105,56 @@ document.addEventListener("DOMContentLoaded", function () {
                     enabled: userRole !== "lecturer" || userRole !== "student"
                 });
                 groupDropdown.appendTo('#GroupId');
+
+                if (userRole === "lecturer" && !args.data.IsClosed) {
+                    var finishButton = document.createElement('button');
+                    finishButton.textContent = "Zakończ zajęcia";
+                    finishButton.className = 'e-btn e-primary e-event-finish e-button-finish-task';
+                    finishButton.style.marginTop = '10px';
+                    finishButton.addEventListener('click', function () {
+                        fetch('/Scheduler/CloseLesson', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ LessonId: args.data.Id })
+                        })
+                            .then(response => response.json())
+                            .then(result => {
+                                if (result.success) { 
+                                    args.data.IsClosed = true;
+                                    finishButton.remove();
+                                    isUpdatingEvent = true;
+                                    console.log(args);
+                                    scheduleObj.saveEvent(args.data);
+                                    isUpdatingEvent = false;
+                                    alert("Zadanie zostało zakończone.");
+                                    
+                                    
+                                } else {
+                                    alert("Nie udało się zakończyć zadania: " + result.message);
+                                }
+                            })
+                            .catch(err => {
+                                console.error("Błąd podczas zamykania zadania:", err);
+                            });
+                    });
+
+                    formElement.appendChild(finishButton);
+                }
+
+                if (userRole === "student" && !!args.data.IsClosed) {
+                   var finishButton = document.createElement('a');
+                    finishButton.textContent = "Przejdź do ankiety";
+                    finishButton.className = 'e-btn e-primary e-event-finish e-button-finish-task';
+                    finishButton.style.marginTop = '10px';
+                    finishButton.style.backgroundColor = 'green';
+                    finishButton.style.color = 'white'; 
+                    finishButton.style.textDecoration = 'none';
+                    finishButton.href = '/';
+                    finishButton.target = '_self';
+                    formElement.appendChild(finishButton);
+                }
 
               if (userRole === "lecturer" || userRole === "student") {
                     var titleElement = args.element.querySelector('.e-popup-header .e-title, .e-title-text');
@@ -175,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (args.requestType === 'eventChange') {
     var updatedEvent = args.data;
+    updatedEvent.IsClosed = false;
 
     if (!updatedEvent.GroupId || updatedEvent.GroupId === "undefined") {
         var groupId = document.getElementById('GroupId_hidden')?.value;
@@ -192,7 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
             Id: updatedEvent.Id,
             StartTime: new Date(updatedEvent.StartTime).toISOString(),
             EndTime: new Date(updatedEvent.EndTime).toISOString(),
-            GroupId: updatedEvent.GroupId
+            GroupId: parseInt(updatedEvent.GroupId)
         })
     })
     .then(response => response.json())
@@ -209,7 +283,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     StartTime: new Date(updatedEvent.StartTime).toISOString(),
                     EndTime: new Date(updatedEvent.EndTime).toISOString(),
                     Description: updatedEvent.Description || "",
-                    GroupId: updatedEvent.GroupId
+                    GroupId: parseInt(updatedEvent.GroupId)
                 })
             })
             .then(response => response.json())
@@ -275,7 +349,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 StartTime: new Date(event.startTime),
                 EndTime: new Date(event.endTime),
                 Description: event.description,
-                GroupId: event.groupId
+                GroupId: event.groupId,
+                IsClosed: event.isClosed
             }));
             scheduleObj.eventSettings.dataSource = mappedData;
         });
