@@ -6,7 +6,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     var groupList = [];
-
+    let isUpdatingEvent = false;
     fetch('/Scheduler/GetGroups')
         .then(response => response.json())
         .then(data => {
@@ -85,12 +85,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         ,
         actionBegin: function (args) {
-            if (args.requestType === 'eventCreate') {
-                var data = args.data[0];
-                var groupId = document.getElementById('GroupId').value;
+            if(!!isUpdatingEvent)
+            {
+                return;
+            }
+    if (args.requestType === 'eventCreate') {
+        var data = args.data[0];
+        var groupId = document.getElementById('GroupId_hidden').value;
+        data.GroupId = groupId;
+        (args.data.GroupId != "undefined" && args.data.GroupId != null) ? args.data.GroupId = parseInt(args.data.GroupId) : '';
+        
 
-                data.GroupId = groupId;
+        args.cancel = true;
 
+        fetch('/Scheduler/ValidateLesson', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Id: null,
+                StartTime: new Date(data.StartTime).toISOString(),
+                EndTime: new Date(data.EndTime).toISOString(),
+                GroupId: data.GroupId
+            })
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
                 fetch('/Scheduler/AddLesson', {
                     method: 'POST',
                     headers: {
@@ -104,68 +126,114 @@ document.addEventListener("DOMContentLoaded", function () {
                         GroupId: data.GroupId
                     })
                 }).then(response => response.json())
-                    .then(result => {
-                        if (result.success) {
-                            alert(result.message);
-                            scheduleObj.refresh();
-                        } else {
-                            alert("Failed to add lesson");
-                        }
-                    });
+                .then(result => {
+                    if (result.success) {
+                        isUpdatingEvent = true;
+                        alert(result.message);
+                        scheduleObj.addEvent(data);
+                        isUpdatingEvent = false;
+                    } else {
+                        alert("Failed to add lesson!");
+                    }
+                });
+            } else {
+                alert("Validation failed: " + result.message);
+                scheduleObj.refresh();
             }
+        });
+    }
 
-            if (args.requestType === 'eventChange') {
-                var updatedEvent = args.data;
-                console.log(updatedEvent);
-                // Pobierz wartość GroupId, jeśli brakuje
-                if (!updatedEvent.GroupId || updatedEvent.GroupId === "undefined") {
-                    var groupId = document.getElementById('GroupId_hidden')?.value;
-                    updatedEvent.GroupId = groupId;
+    if (args.requestType === 'eventChange') {
+    var updatedEvent = args.data;
+
+    if (!updatedEvent.GroupId || updatedEvent.GroupId === "undefined") {
+        var groupId = document.getElementById('GroupId_hidden')?.value;
+        updatedEvent.GroupId = groupId;
+    }
+
+    args.cancel = true;
+
+    fetch('/Scheduler/ValidateLesson', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Id: updatedEvent.Id,
+            StartTime: new Date(updatedEvent.StartTime).toISOString(),
+            EndTime: new Date(updatedEvent.EndTime).toISOString(),
+            GroupId: updatedEvent.GroupId
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            fetch('/Scheduler/UpdateLesson', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Id: updatedEvent.Id,
+                    Title: updatedEvent.Subject,
+                    StartTime: new Date(updatedEvent.StartTime).toISOString(),
+                    EndTime: new Date(updatedEvent.EndTime).toISOString(),
+                    Description: updatedEvent.Description || "",
+                    GroupId: updatedEvent.GroupId
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    alert("Lesson updated successfully!");
+                    isUpdatingEvent = true;
+                    scheduleObj.saveEvent(updatedEvent);
+                    isUpdatingEvent = false;
+                    
+                } else {
+                    alert("Failed to update lesson!");
+                    scheduleObj.refresh();
                 }
-                console.log(updatedEvent);
-
-                fetch('/Scheduler/UpdateLesson', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        Id: updatedEvent.Id,
-                        Title: updatedEvent.Subject,
-                        StartTime: new Date(updatedEvent.StartTime).toISOString(),
-                        EndTime: new Date(updatedEvent.EndTime).toISOString(),
-                        Description: updatedEvent.Description || "",
-                        GroupId: updatedEvent.GroupId
-                    })
-                }).then(response => response.json())
-                    .then(result => {
-                        if (!result.success) {
-                            alert("Failed to update lesson: " + result.message);
-                            scheduleObj.refresh();
-                        }
-                    });
-            }
-
-            if (args.requestType === 'eventRemove') {
-                var deletedEvent = args.data[0];
-
-                fetch('/Scheduler/DeleteLesson', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        Id: deletedEvent.Id
-                    })
-                }).then(response => response.json())
-                    .then(result => {
-                        if (!result.success) {
-                            alert("Failed to delete lesson: " + result.message);
-                            scheduleObj.refresh();
-                        }
-                    });
-            }
+            });
+        } else {
+            alert("Validation failed: " + result.message);
+            scheduleObj.refresh();
         }
+    });
+}
+
+
+    if (args.requestType === 'eventRemove') {
+        var deletedEvent = args.data[0];
+
+       
+        args.cancel = true;
+
+        fetch('/Scheduler/DeleteLesson', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Id: deletedEvent.Id
+            })
+        }).then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                isUpdatingEvent = true;
+                scheduleObj.deleteEvent(deletedEvent);
+                isUpdatingEvent = false;
+                alert("Lesson deleted successfully!");
+                
+                
+            } else {
+                alert("Failed to delete lesson!");
+                scheduleObj.refresh();
+            }
+        });
+    }
+}
+
     });
 
     fetch('/Scheduler/GetLessons')

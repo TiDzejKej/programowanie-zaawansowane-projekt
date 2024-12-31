@@ -110,6 +110,13 @@ namespace ProjektProgramowanie.Controllers
         [HttpPost]
         public async Task<IActionResult> ValidateLesson([FromBody] LessonValidationViewModel model)
         {
+            if(model == null)
+            {
+                return Json(new { success = false, message = "Invalid data!" });
+            }
+            model.StartTime = model.StartTime.AddHours(1);
+            model.EndTime = model.EndTime.AddHours(1);
+
             var conflictingLessons = await _context.Lessons
                 .Where(l => l.GroupId == model.GroupId && l.Id != model.Id &&
                             ((model.StartTime >= l.StartTime && model.StartTime < l.EndTime) ||
@@ -119,6 +126,11 @@ namespace ProjektProgramowanie.Controllers
             if (conflictingLessons.Any())
             {
                 return Json(new { success = false, message = "Time conflict detected for the same group." });
+            }
+            var groupExists = await _context.Groups.AnyAsync(g => g.Id == model.GroupId);
+            if (!groupExists)
+            {
+                return Json(new { success = false, message = "Invalid GroupId. The group does not exist." });
             }
 
             return Json(new { success = true });
@@ -151,7 +163,7 @@ namespace ProjektProgramowanie.Controllers
 
         public class LessonValidationViewModel
         {
-            public int Id { get; set; }
+            public int? Id { get; set; }
             public DateTime StartTime { get; set; }
             public DateTime EndTime { get; set; }
             public int GroupId { get; set; }
