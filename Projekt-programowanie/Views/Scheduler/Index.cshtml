@@ -1,10 +1,14 @@
-﻿@{
+﻿@model string
+@{
     ViewData["Title"] = "Scheduler";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div id="scheduler"></div>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    const userRole = "@Model";
     var groupList = [];
     let isUpdatingEvent = false;
     fetch('/Scheduler/GetGroups')
@@ -66,7 +70,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 `;
                 formElement.appendChild(container);
                 (args.data.GroupId != "undefined" && args.data.GroupId != null) ? args.data.GroupId = parseInt(args.data.GroupId) : '';
-                // Inicjalizacja DropDownList z wartością domyślną
                 var groupDropdown = new ej.dropdowns.DropDownList({
                     dataSource: groupList.map(group => ({
                         value: group.id,
@@ -74,13 +77,34 @@ document.addEventListener("DOMContentLoaded", function () {
                     })),
                     fields: { text: 'text', value: 'value' },
                     placeholder: "Select Group",
-                    value: args.data.GroupId || null, // Ustawienie domyślnej wartości
-                    allowFiltering: true // Umożliwia filtrowanie (opcjonalne)
+                    value: args.data.GroupId || null,
+                    allowFiltering: true,
+                    enabled: userRole !== "lecturer" || userRole !== "student"
                 });
                 groupDropdown.appendTo('#GroupId');
 
-                // Debugowanie wartości
-                console.log("Editing Event GroupId:", args.data.GroupId);
+              if (userRole === "lecturer" || userRole === "student") {
+                    var titleElement = args.element.querySelector('.e-popup-header .e-title, .e-title-text');
+                    if (titleElement) {
+                        titleElement.textContent = "View event";
+                    }
+
+                    var inputs = args.element.querySelectorAll('input, textarea, select, .custom-group-field');
+                    inputs.forEach(input => {
+                        input.setAttribute('disabled', 'true');
+                    });
+
+                    var saveButton = args.element.querySelector('.e-event-save');
+                    var deleteButton = args.element.querySelector('.e-event-delete');
+                    if (saveButton) saveButton.style.display = 'none';
+                    if (deleteButton) deleteButton.style.display = 'none';
+
+                    var recurrenceButton = args.element.querySelector('.e-recurrence-editor');
+                    if (recurrenceButton) recurrenceButton.style.display = 'none';
+
+                    var cancelButton = args.element.querySelector('.e-event-cancel');
+                    if (cancelButton) cancelButton.style.display = 'none';
+                }
             }
         }
         ,
@@ -89,6 +113,12 @@ document.addEventListener("DOMContentLoaded", function () {
             {
                 return;
             }
+            if (userRole === "lecturer" || userRole === "student") {
+            if (args.requestType === 'eventCreate' || args.requestType === 'eventChange' || args.requestType === 'eventRemove') {
+                args.cancel = true;
+                return;
+            }
+        }
     if (args.requestType === 'eventCreate') {
         var data = args.data[0];
         var groupId = document.getElementById('GroupId_hidden').value;

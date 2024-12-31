@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjektProgramowanie.Data;
@@ -6,6 +7,7 @@ using ProjektProgramowanie.Models;
 
 namespace ProjektProgramowanie.Controllers
 {
+    [Authorize]
     public class SchedulerController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -17,12 +19,22 @@ namespace ProjektProgramowanie.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
+        [Authorize(Roles = "admin, employee, lecturer")]
         public async Task<IActionResult> GetGroups()
         {
-            var groups = await _context.Groups
+            var userId = _userManager.GetUserId(User);
+
+            IQueryable<Group> groupsQuery = _context.Groups
                 .Include(g => g.Teacher)
-                .Include(g => g.Students)
+                .Include(g => g.Students);
+
+            // Filtr dla roli Lecturer
+            if (User.IsInRole("lecturer"))
+            {
+                groupsQuery = groupsQuery.Where(g => g.TeacherId == userId);
+            }
+
+            var groups = await groupsQuery
                 .Select(g => new
                 {
                     g.Id,
@@ -35,30 +47,13 @@ namespace ProjektProgramowanie.Controllers
             return Ok(groups);
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var lessons = await _context.Lessons
-                .Include(l => l.Group)
-                .ThenInclude(g => g.Teacher)
-                .Include(l => l.Group.Students)
-                .ToListAsync();
-
-            var scheduleData = lessons.Select(l => new
-            {
-                Id = l.Id,
-                Subject = l.Title,
-                StartTime = l.StartTime,
-                EndTime = l.EndTime,
-                Description = l.Description,
-                GroupName = l.Group.Name,
-                Teacher = $"{l.Group.Teacher.FirstName} {l.Group.Teacher.LastName}",
-                Students = l.Group.Students.Select(s => $"{s.FirstName} {s.LastName}")
-            });
-
-            return View(scheduleData);
+            return View("Index", GetRole());
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, employee")]
         public async Task<IActionResult> AddLesson([FromBody] LessonViewModel model)
         {
             var utcPlusOneStart = model.StartTime.AddHours(1);
@@ -80,6 +75,7 @@ namespace ProjektProgramowanie.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, employee")]
         public async Task<IActionResult> UpdateLesson([FromBody] LessonViewModel model)
         {
             if (model == null)
@@ -108,6 +104,7 @@ namespace ProjektProgramowanie.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin, employee")]
         public async Task<IActionResult> ValidateLesson([FromBody] LessonValidationViewModel model)
         {
             if(model == null)
@@ -136,6 +133,7 @@ namespace ProjektProgramowanie.Controllers
             return Json(new { success = true });
         }
         [HttpPost]
+        [Authorize(Roles = "admin, employee")]
         public async Task<IActionResult> DeleteLesson([FromBody] LessonDeleteViewModel model)
         {
             if (model == null)
@@ -171,9 +169,21 @@ namespace ProjektProgramowanie.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "admin, employee, lecturer")]
         public async Task<IActionResult> GetLessons()
         {
-            var lessons = await _context.Lessons.ToListAsync();
+            var userId = _userManager.GetUserId(User);
+
+            IQueryable<Lesson> lessonsQuery = _context.Lessons
+                .Include(l => l.Group)
+                .ThenInclude(g => g.Teacher);
+
+            if (User.IsInRole("lecutrer"))
+            {
+                lessonsQuery = lessonsQuery.Where(l => l.Group.TeacherId == userId);
+            }
+
+            var lessons = await lessonsQuery.ToListAsync();
 
             var result = lessons.Select(l => new
             {
@@ -182,7 +192,9 @@ namespace ProjektProgramowanie.Controllers
                 StartTime = l.StartTime,
                 EndTime = l.EndTime,
                 Description = l.Description,
-                GroupId = l.GroupId
+                GroupId = l.GroupId,
+                GroupName = l.Group.Name,
+                Teacher = $"{l.Group.Teacher.FirstName} {l.Group.Teacher.LastName}"
             });
 
             return Json(result);
@@ -196,6 +208,11 @@ namespace ProjektProgramowanie.Controllers
             public DateTime EndTime { get; set; }
             public string Description { get; set; }
             public int GroupId { get; set; }
+        }
+
+        public string GetRole()
+        {
+            return User.IsInRole("admin") ? "admin" : User.IsInRole("employee") ? "employee" : "lecturer";
         }
     }
 }
