@@ -1,18 +1,17 @@
 ﻿@model ProjektProgramowanie.Models.Question
 
 @{
-    ViewData["Title"] = "Edit Question";
+    ViewData["Title"] = "Create";
 }
 
-<h1>Edit Question</h1>
+<h1>Create</h1>
 
 <h4>Question</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="QuestionId" />
             <div class="form-group">
                 <label asp-for="QuestionText" class="control-label"></label>
                 <input asp-for="QuestionText" class="form-control" />
@@ -21,15 +20,14 @@
             <div class="form-group">
                 <label asp-for="SurveyId" class="control-label"></label>
                 <select asp-for="SurveyId" class="form-control" asp-items="ViewBag.SurveyId"></select>
-                <span asp-validation-for="SurveyId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

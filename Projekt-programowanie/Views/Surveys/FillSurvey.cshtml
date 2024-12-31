@@ -1,0 +1,14 @@
+﻿@model ProjektProgramowanie.Models.Survey
+
+<h2>Survey</h2>
+<form asp-action="SubmitSurvey" method="post">
+    <input type="hidden" asp-for="SurveyId" />
+    @foreach (var question in Model.Questions)
+    {
+        <div>
+            <label>@question.QuestionText</label>
+            <input type="text" name="Responses[@question.QuestionId]" />
+        </div>
+    }
+    <button type="submit">Submit</button>
+</form>

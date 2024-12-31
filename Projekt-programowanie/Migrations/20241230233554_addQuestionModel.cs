@@ -5,7 +5,7 @@
 namespace ProjektProgramowanie.Migrations
 {
     /// <inheritdoc />
-    public partial class RoleUpdate : Migration
+    public partial class addQuestionModel : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

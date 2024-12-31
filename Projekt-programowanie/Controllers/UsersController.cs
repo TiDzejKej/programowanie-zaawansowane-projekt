@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjektProgramowanie.Models;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProjektProgramowanie.Controllers
 {
+	[Authorize(Roles = "admin, employee")]
 	public class UsersController : Controller
 	{
 		private readonly UserManager<ApplicationUser> _userManager;

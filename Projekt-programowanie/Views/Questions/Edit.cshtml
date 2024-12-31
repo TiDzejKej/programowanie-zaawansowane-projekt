@@ -1,10 +1,10 @@
 ﻿@model ProjektProgramowanie.Models.Question
 
 @{
-    ViewData["Title"] = "Edit Question";
+    ViewData["Title"] = "Edit";
 }
 
-<h1>Edit Question</h1>
+<h1>Edit</h1>
 
 <h4>Question</h4>
 <hr />
@@ -30,6 +30,10 @@
     </div>
 </div>
 
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

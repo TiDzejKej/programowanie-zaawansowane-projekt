@@ -174,6 +174,45 @@ namespace ProjektProgramowanie.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ProjektProgramowanie.Models.Answer", b =>
+                {
+                    b.Property<int>("AnswerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnswerId"));
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Response")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SurveyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AnswerId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("SurveyId");
+
+                    b.ToTable("Answer");
+                });
+
+            modelBuilder.Entity("ProjektProgramowanie.Models.AnswerViewModel", b =>
+                {
+                    b.Property<int>("SurveyId")
+                        .HasColumnType("int");
+
+                    b.ToTable("AnswerViewModel");
+                });
+
             modelBuilder.Entity("ProjektProgramowanie.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -307,6 +346,49 @@ namespace ProjektProgramowanie.Migrations
                     b.ToTable("Lessons");
                 });
 
+            modelBuilder.Entity("ProjektProgramowanie.Models.Question", b =>
+                {
+                    b.Property<int>("QuestionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuestionId"));
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SurveyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("QuestionId");
+
+                    b.HasIndex("SurveyId");
+
+                    b.ToTable("Question");
+                });
+
+            modelBuilder.Entity("ProjektProgramowanie.Models.Survey", b =>
+                {
+                    b.Property<int>("SurveyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SurveyId"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SurveyId");
+
+                    b.ToTable("Survey");
+                });
+
             modelBuilder.Entity("ApplicationUserGroup", b =>
                 {
                     b.HasOne("ProjektProgramowanie.Models.Group", null)
@@ -373,6 +455,25 @@ namespace ProjektProgramowanie.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ProjektProgramowanie.Models.Answer", b =>
+                {
+                    b.HasOne("ProjektProgramowanie.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ProjektProgramowanie.Models.Survey", "Survey")
+                        .WithMany()
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Survey");
+                });
+
             modelBuilder.Entity("ProjektProgramowanie.Models.Group", b =>
                 {
                     b.HasOne("ProjektProgramowanie.Models.ApplicationUser", "Teacher")
@@ -395,9 +496,25 @@ namespace ProjektProgramowanie.Migrations
                     b.Navigation("Group");
                 });
 
+            modelBuilder.Entity("ProjektProgramowanie.Models.Question", b =>
+                {
+                    b.HasOne("ProjektProgramowanie.Models.Survey", "Survey")
+                        .WithMany("Questions")
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Survey");
+                });
+
             modelBuilder.Entity("ProjektProgramowanie.Models.ApplicationUser", b =>
                 {
                     b.Navigation("GroupsLed");
+                });
+
+            modelBuilder.Entity("ProjektProgramowanie.Models.Survey", b =>
+                {
+                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }
