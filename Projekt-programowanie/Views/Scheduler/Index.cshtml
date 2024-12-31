@@ -11,14 +11,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const userRole = "@Model";
     var groupList = [];
     let isUpdatingEvent = false;
+
     setTimeout(() => {
-        const element = document.querySelector('a.e-license');
-if (element) {
-    const parentElement = element.parentElement;
-    parentElement.remove();
-} 
-
-
+       const element = document.querySelector('a.e-license');
+    if (element) {
+        const parentElement = element.parentElement;
+        parentElement.remove();
+    } 
     }, 0);
     
 
