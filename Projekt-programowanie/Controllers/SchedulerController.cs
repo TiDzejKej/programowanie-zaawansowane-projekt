@@ -96,7 +96,7 @@ namespace ProjektProgramowanie.Controllers
             lesson.EndTime = utcPlusOneEnd;
             lesson.Description = model.Description;
             lesson.GroupId = model.GroupId;
-            lesson.IsClosed = false;
+            //lesson.IsClosed = false;
 
             _context.Lessons.Update(lesson);
             await _context.SaveChangesAsync();
@@ -173,6 +173,7 @@ namespace ProjektProgramowanie.Controllers
         [Authorize(Roles = "admin, employee, lecturer, student")]
         public async Task<IActionResult> GetLessons()
         {
+            // dodac  quqery dla studenta ktore wyszukuje mu czy wykonal ankiete
             var userId = _userManager.GetUserId(User);
 
             IQueryable<Lesson> lessonsQuery = _context.Lessons

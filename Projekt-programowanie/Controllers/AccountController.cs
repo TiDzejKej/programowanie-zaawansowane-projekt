@@ -66,7 +66,8 @@ namespace ProjektProgramowanie.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(RegisterViewModel model)
 		{
-			if (ModelState.IsValid)
+            model.AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+            if (ModelState.IsValid)
 			{
                 var user = new ApplicationUser
 				{
@@ -80,8 +81,8 @@ namespace ProjektProgramowanie.Controllers
                 };
 
 				var result = await _userManager.CreateAsync(user, model.Password);
-
-				if (result.Succeeded)
+                
+                if (result.Succeeded)
 				{
 					if (!string.IsNullOrEmpty(model.Role))
 					{
@@ -107,7 +108,6 @@ namespace ProjektProgramowanie.Controllers
 				}
 			}
 
-            model.AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
 			return View(model);
 		}
 

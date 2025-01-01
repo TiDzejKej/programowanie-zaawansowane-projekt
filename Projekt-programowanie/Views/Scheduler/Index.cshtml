@@ -150,7 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     finishButton.style.backgroundColor = 'green';
                     finishButton.style.color = 'white'; 
                     finishButton.style.textDecoration = 'none';
-                    finishButton.href = '/';
+                    finishButton.href = '/Survey/Create?LessonId=' + args.data.Id;
                     finishButton.target = '_self';
                     formElement.appendChild(finishButton);
                 }
@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (args.requestType === 'eventChange') {
     var updatedEvent = args.data;
-    updatedEvent.IsClosed = false;
+    
 
     if (!updatedEvent.GroupId || updatedEvent.GroupId === "undefined") {
         var groupId = document.getElementById('GroupId_hidden')?.value;

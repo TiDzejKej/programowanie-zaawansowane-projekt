@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using ProjektProgramowanie.Data;
 using ProjektProgramowanie.Models;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace ProjektProgramowanie.Controllers
@@ -22,14 +20,16 @@ namespace ProjektProgramowanie.Controllers
 		}
 
 		// GET: Survey/Create
-		public IActionResult Create(int? lessonId)
+		public IActionResult Create(int lessonId)
 		{
 			var userId = _userManager.GetUserId(User);
+			
 			var model = new SurveyViewModel
 			{
-				LessonId = lessonId ?? 1, // Dla testów na sztywno 1
-				StudentId = userId ?? "85d603bc - da11 - 409d - 8486 - 851af314ace4" // Dla testów na sztywno
+				LessonId = lessonId,
+                StudentId = userId
 			};
+			
 			return View(model);
 		}
 

@@ -14,7 +14,7 @@ namespace ProjektProgramowanie.Data
 
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Group> Groups { get; set; }
-		public DbSet<ProjektProgramowanie.Models.Survey> Surveys { get; set; } = default!;
+		public DbSet<Survey> Surveys { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +31,6 @@ namespace ProjektProgramowanie.Data
                 .WithMany(u => u.GroupsJoined)
                 .UsingEntity(j => j.ToTable("GroupStudents"));
         }
-        public DbSet<ProjektProgramowanie.Models.SurveyViewModel> SurveyViewModel { get; set; } = default!;
+        public DbSet<SurveyViewModel> SurveyViewModel { get; set; }
     }
 }
