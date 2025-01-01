@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ProjektProgramowanie.Models.Survey>
+
+
+@if (User.IsInRole("admin"))
+{ 
+    ViewData["Title"] = "All Survey"; 
+}
+else if (User.IsInRole("employee"))
+{
+	ViewData["Title"] = "Students Survey";
+}
+else
+{
+	ViewData["Title"] = "My Survey";
+}
+
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>Course Rating</th>
+            <th>Recommendation</th>
+            @if (User.IsInRole("admin"))
+            {
+                <th>Lesson ID</th>
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.StudentId</td>
+                <td>@item.CourseRating</td>
+                <td>@item.Recommendation</td>
+                @if (User.IsInRole("admin"))
+                {
+                    <td>@item.LessonId</td>
+                    <td>
+                        <a href="@Url.Action("Detail", new { id = item.Id })" class="btn btn-info btn-sm">Details</a>
+                        <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this survey?')">Delete</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+

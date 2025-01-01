@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProjektProgramowanie.Models
 {
-	public class Survey
+	public class SurveyViewModel
 	{
 		[Key]
 		public int Id { get; set; }
@@ -12,7 +11,7 @@ namespace ProjektProgramowanie.Models
 		public int LessonId { get; set; }
 
 		[Required(ErrorMessage = "StudentId is required.")]
-		[StringLength(450, ErrorMessage = "StudentId cannot exceed 450 characters.")] 
+		[StringLength(450, ErrorMessage = "StudentId cannot exceed 450 characters.")]
 		public string StudentId { get; set; }
 
 		[Required(ErrorMessage = "CourseRating is required.")]
@@ -24,3 +23,4 @@ namespace ProjektProgramowanie.Models
 		public string Recommendation { get; set; }
 	}
 }
+
