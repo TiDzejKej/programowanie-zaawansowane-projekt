@@ -68,15 +68,16 @@ namespace ProjektProgramowanie.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var user = new ApplicationUser
+                var user = new ApplicationUser
 				{
 					UserName = model.Email,
 					Email = model.Email,
 					FirstName = model.FirstName,
 					LastName = model.LastName,
 					Adress = model.Adress,
-					CreatedAt = DateTime.UtcNow
-				};
+					CreatedAt = DateTime.UtcNow,
+                    EmailConfirmed = true
+                };
 
 				var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -97,7 +98,7 @@ namespace ProjektProgramowanie.Controllers
 					TempData["SuccessMessage"] = "Your account has been created successfully!";
 
 
-					return View("Register");
+					return View(model);
 				}
 
 				foreach (var error in result.Errors)
@@ -106,7 +107,7 @@ namespace ProjektProgramowanie.Controllers
 				}
 			}
 
-			model.AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+            model.AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
 			return View(model);
 		}
 
@@ -207,7 +208,6 @@ namespace ProjektProgramowanie.Controllers
 
 			return View(model);
 		}
-
 
 	}
 
