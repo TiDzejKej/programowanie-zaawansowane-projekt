@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ProjektProgramowanie.Models.UserWithRolesViewModel>
+
+@{
+    ViewData["Title"] = "Users List";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Created At</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.Adress</td>
+                <td>@item.CreatedAt</td>
+                <td>@string.Join(", ", item.Roles)</td>
+                <td>
+                    <a href="@Url.Action("Detail", new { id = item.UserId })">Details</a> |
+                    <a href="@Url.Action("Edit", new { id = item.UserId })">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

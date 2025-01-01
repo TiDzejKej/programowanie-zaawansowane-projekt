@@ -22,7 +22,18 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <div class="d-flex align-items-center">
-                            
+                            <div class="dropdown">
+                                <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Survey
+                                </button>
+                                <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Survey" asp-action="Index">
+                                            Survey list
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
 							@if (User.IsInRole("admin") || User.IsInRole("employee"))
                             {
                                 <div class="dropdown">
@@ -31,12 +42,12 @@
                                     </button>
                                     <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
                                         <li>
-                                            <a class="dropdown-item" asp-controller="Users" asp-action="Index">
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Index">
                                                 Users list
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register" role="button">
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Register">
                                                 Register new user
                                             </a>
                                         </li>
@@ -69,18 +80,6 @@
                                     <a asp-controller="Scheduler" asp-action="Index" class="btn btn-light border" type="button">
                                         Scheduler
                                     </a>
-                                </div>
-                                <div class="dropdown">
-                                    <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Survey
-                                    </button>
-                                    <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
-                                        <li>
-                                            <a class="dropdown-item" asp-controller="Survey" asp-action="Index">
-                                                Survey list
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             } 
                         </div>

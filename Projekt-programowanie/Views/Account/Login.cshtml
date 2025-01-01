@@ -1,0 +1,24 @@
+﻿@model ProjektProgramowanie.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Logowanie";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" id="Email" name="Email" class="form-control" value="@Model.Email" required />
+    </div>
+    <div class="form-group">
+        <label for="Password">Hasło</label>
+        <input type="password" id="Password" name="Password" class="form-control" required />
+    </div>
+    <div class="form-group form-check">
+        <input type="checkbox" id="RememberMe" name="RememberMe" class="form-check-input" />
+        <label class="form-check-label" for="RememberMe">Zapamiętaj mnie</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Zaloguj się</button>
+</form>
+

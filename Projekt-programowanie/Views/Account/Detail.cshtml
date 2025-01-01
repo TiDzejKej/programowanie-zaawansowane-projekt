@@ -1,0 +1,32 @@
+﻿@model ProjektProgramowanie.Models.UserWithRolesViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <label>First Name:</label>
+    <span>@Model.FirstName</span>
+</div>
+<div>
+    <label>Last Name:</label>
+    <span>@Model.LastName</span>
+</div>
+<div>
+    <label>Email:</label>
+    <span>@Model.Email</span>
+</div>
+<div>
+    <label>Address:</label>
+    <span>@Model.Adress</span>
+</div>
+<div>
+    <label>Created At:</label>
+    <span>@Model.CreatedAt</span>
+</div>
+<div>
+    <label>Roles:</label>
+    <span>@string.Join(", ", Model.Roles)</span>
+</div>
