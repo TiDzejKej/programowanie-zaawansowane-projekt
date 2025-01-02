@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 description: { name: 'Description' },
                 groupId: { name: 'GroupId' },
                 isClosed: { name: 'IsClosed' },
+                hasSurvey: { name: 'HasSurvey'}
 
             }
         },
@@ -142,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     formElement.appendChild(finishButton);
                 }
 
-                if (userRole === "student" && !!args.data.IsClosed) {
+                if (userRole === "student" && !!args.data.IsClosed && !args.data.HasSurvey) {
                    var finishButton = document.createElement('a');
                     finishButton.textContent = "Przejdź do ankiety";
                     finishButton.className = 'e-btn e-primary e-event-finish e-button-finish-task';
@@ -349,7 +350,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 EndTime: new Date(event.endTime),
                 Description: event.description,
                 GroupId: event.groupId,
-                IsClosed: event.isClosed
+                IsClosed: event.isClosed,
+                HasSurvey: event.hasSurvey
             }));
             scheduleObj.eventSettings.dataSource = mappedData;
         });

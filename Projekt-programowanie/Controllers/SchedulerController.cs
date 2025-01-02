@@ -202,7 +202,8 @@ namespace ProjektProgramowanie.Controllers
                 GroupId = l.GroupId,
                 GroupName = l.Group.Name,
                 Teacher = $"{l.Group.Teacher.FirstName} {l.Group.Teacher.LastName}",
-                IsClosed = l.IsClosed
+                IsClosed = l.IsClosed,
+                HasSurvey = User.IsInRole("student") && _context.Surveys.Any(s => s.LessonId == l.Id && s.StudentId == userId)
             });
 
             return Json(result);
