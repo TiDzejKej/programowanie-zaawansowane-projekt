@@ -16,13 +16,20 @@
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Student Schedule Manager</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <div class="d-flex align-items-center">
-                            
+                            @if (!User.Identity.IsAuthenticated)
+                                {
+                                    <div class="dropdown mr-2">
+                                         <a asp-controller="ContactForm" asp-action="Index" class="btn btn-light border" type="button">
+                                        Contact Form
+                                        </a>
+                                    </div>
+                                }
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <div class="dropdown">
@@ -42,59 +49,51 @@
                                         </li>
                                     </ul>
                                 </div>
-                            }
-                            @if (User.IsInRole("admin") || User.IsInRole("employee"))
-                            {
-                                <div class="dropdown mr-2">
-                                    <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Users
-                                    </button>
-                                    <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
-                                        <li>
-                                            <a class="dropdown-item" asp-controller="Account" asp-action="Index">
-                                                Users list
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" asp-controller="Account" asp-action="Register">
-                                                Register new user
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
 
-                                <div class="dropdown mr-2">
-                                    <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Groups
-                                    </button>
-                                    <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
-                                        <li>
-                                            <a class="dropdown-item" asp-controller="Groups" asp-action="Index">
-                                                Groups list
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" asp-controller="Groups" asp-action="Create">
-                                                Create new group
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                @if (User.IsInRole("admin") || User.IsInRole("employee"))
+                                {
+                                    <div class="dropdown mr-2">
+                                        <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Users
+                                        </button>
+                                        <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
+                                            <li>
+                                                <a class="dropdown-item" asp-controller="Account" asp-action="Index">
+                                                    Users list
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" asp-controller="Account" asp-action="Register">
+                                                    Register new user
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                <div class="dropdown mr-2">
-                                    <a asp-controller="ContactForm" asp-action="List" class="btn btn-light border" type="button">
-                                        Contacts List
-                                    </a>
-                                </div>
+                                    <div class="dropdown mr-2">
+                                        <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Groups
+                                        </button>
+                                        <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
+                                            <li>
+                                                <a class="dropdown-item" asp-controller="Groups" asp-action="Index">
+                                                    Groups list
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item" asp-controller="Groups" asp-action="Create">
+                                                    Create new group
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="dropdown mr-2">
+                                        <a asp-controller="ContactForm" asp-action="List" class="btn btn-light border" type="button">
+                                            Contacts List
+                                        </a>
+                                    </div>
+                                }
                             }
-                            @if(User.Identity.IsAuthenticated)
-                            {
-                                <div class="dropdown">
-                                    <a asp-controller="Scheduler" asp-action="Index" class="btn btn-light border" type="button">
-                                        Scheduler
-                                    </a>
-                                </div>
-                            } 
                         </div>
                     </ul>
                     <partial name="_LoginPartial" />
