@@ -5,22 +5,22 @@
     </div>
 }
 
-<h2>Formularz kontaktowy</h2>
+<h2>Contact Form</h2>
 <form asp-action="SendEmail" asp-controller="ContactForm" method="post" class="needs-validation" novalidate>
     <div class="mb-3">
-        <label for="Title" class="form-label">Tytu³</label>
+        <label for="Title" class="form-label">Title</label>
         <input type="text" class="form-control" id="Title" name="Title" required>
-        <div class="invalid-feedback">Proszê podaæ tytu³.</div>
+        <div class="invalid-feedback">Please provide a title.</div>
     </div>
     <div class="mb-3">
-        <label for="Content" class="form-label">Treœæ</label>
+        <label for="Content" class="form-label">Message</label>
         <textarea class="form-control" id="Content" name="Content" rows="5" required></textarea>
-        <div class="invalid-feedback">Proszê podaæ treœæ wiadomoœci.</div>
+        <div class="invalid-feedback">Please provide the message content.</div>
     </div>
     <div class="mb-3">
         <label for="Email" class="form-label">Email</label>
         <input type="email" class="form-control" id="Email" name="Email" required>
-        <div class="invalid-feedback">Proszê podaæ poprawny adres email.</div>
+        <div class="invalid-feedback">Please provide a valid email address.</div>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Wyœlij</button>
+    <button type="submit" class="btn btn-primary w-100">Send</button>
 </form>
