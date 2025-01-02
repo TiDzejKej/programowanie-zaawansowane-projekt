@@ -16,7 +16,9 @@ namespace ProjektProgramowanie.Data
         public DbSet<Group> Groups { get; set; }
 		public DbSet<Survey> Surveys { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder builder)
+        public DbSet<ContactForm> ContactForms { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 

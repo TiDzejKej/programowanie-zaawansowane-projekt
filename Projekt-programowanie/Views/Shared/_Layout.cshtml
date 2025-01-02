@@ -22,7 +22,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <div class="d-flex align-items-center">
-                            <div class="dropdown">
+                            <div class="dropdown mr-2">
                                 <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                     Survey
                                 </button>
@@ -33,10 +33,10 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div>                         
 							@if (User.IsInRole("admin") || User.IsInRole("employee"))
                             {
-                                <div class="dropdown">
+                                <div class="dropdown mr-2">
                                     <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                         Users
                                     </button>
@@ -53,8 +53,8 @@
                                         </li>
                                     </ul>
                                 </div>
-                                
-                                <div class="dropdown">
+
+                                <div class="dropdown mr-2">
                                     <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                         Groups
                                     </button>
@@ -72,16 +72,26 @@
                                     </ul>
                                 </div>
 
-
+                                <div class="dropdown mr-2">
+                                    <a asp-controller="ContactForm" asp-action="List" class="btn btn-light border" type="button">
+                                        Contacts List
+                                    </a>
+                                </div>
                             }
                             @if(User.Identity.IsAuthenticated)
                             {
-                                <div class="dropdown">
+                                <div class="dropdown mr-2">
                                     <a asp-controller="Scheduler" asp-action="Index" class="btn btn-light border" type="button">
                                         Scheduler
                                     </a>
                                 </div>
                             } 
+
+                            <div class="dropdown mr-2">
+                                <a asp-controller="ContactForm" asp-action="Index" class="btn btn-light border" type="button">
+                                    Contact Form
+                                </a>
+                            </div>
                         </div>
                     </ul>
                     <partial name="_LoginPartial" />
