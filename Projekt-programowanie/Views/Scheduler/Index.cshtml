@@ -3,10 +3,37 @@
     ViewData["Title"] = "Scheduler";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<button class="btn btn-primary mb-2" id="export-button">Eksportuj do formatu .ical</button>
 <div id="scheduler"></div>
 
 
 <script>
+    document.getElementById('export-button').addEventListener('click', async function () {
+        try {
+            const response = await fetch('Scheduler/ExportLessons', {
+                method: 'GET'
+            });
+            console.log(response);
+            if (!response.ok) {
+                throw new Error('Błąd podczas pobierania pliku');
+            }
+
+            const blob = await response.blob();
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'zajecia.ics';
+            document.body.appendChild(a);
+            a.click();
+
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Błąd:', error);
+            alert('Wystąpił problem podczas eksportu.');
+        }
+    });
 document.addEventListener("DOMContentLoaded", function () {
     const userRole = "@Model";
     var groupList = [];

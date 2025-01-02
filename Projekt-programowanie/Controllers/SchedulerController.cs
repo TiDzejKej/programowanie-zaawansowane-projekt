@@ -19,7 +19,7 @@ namespace ProjektProgramowanie.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "admin, employee, lecturer")]
+        [Authorize(Roles = "admin, employee, lecturer, student")]
         public async Task<IActionResult> GetGroups()
         {
             var userId = _userManager.GetUserId(User);
@@ -173,7 +173,6 @@ namespace ProjektProgramowanie.Controllers
         [Authorize(Roles = "admin, employee, lecturer, student")]
         public async Task<IActionResult> GetLessons()
         {
-            // dodac  quqery dla studenta ktore wyszukuje mu czy wykonal ankiete
             var userId = _userManager.GetUserId(User);
 
             IQueryable<Lesson> lessonsQuery = _context.Lessons
@@ -261,6 +260,57 @@ namespace ProjektProgramowanie.Controllers
         public string GetRole()
         {
             return User.IsInRole("admin") ? "admin" : User.IsInRole("employee") ? "employee" : User.IsInRole("lecturer") ?  "lecturer" : "student";
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = "admin, employee, lecturer, student")]
+        public async Task<IActionResult> ExportLessons()
+        {
+            var userId = _userManager.GetUserId(User);
+
+            IQueryable<Lesson> lessonsQuery = _context.Lessons
+                .Include(l => l.Group)
+                .ThenInclude(g => g.Teacher);
+
+            if (User.IsInRole("lecturer"))
+            {
+                lessonsQuery = lessonsQuery.Where(l => l.Group.TeacherId == userId);
+            }
+
+            if (User.IsInRole("student"))
+            {
+                lessonsQuery = lessonsQuery.Where(l => l.Group.Students.Any(s => s.Id == userId));
+            }
+
+            var lessons = await lessonsQuery.ToListAsync();
+
+      
+            var calendar = new Ical.Net.Calendar();
+
+            foreach (var lesson in lessons)
+            {
+                var calendarEvent = new Ical.Net.CalendarComponents.CalendarEvent
+                {
+                    Summary = lesson.Title,
+                    DtStart = new Ical.Net.DataTypes.CalDateTime(lesson.StartTime),
+                    DtEnd = new Ical.Net.DataTypes.CalDateTime(lesson.EndTime),
+                    Description = lesson.Description,
+                    Location = $"Grupa: {lesson.Group.Name}, Wykładowca: {lesson.Group.Teacher.FirstName} {lesson.Group.Teacher.LastName}",
+                    Uid = Guid.NewGuid().ToString(),
+                    Status = lesson.IsClosed ? "OTWARTE" : "ZAKONCZONE"
+                };
+
+                calendar.Events.Add(calendarEvent);
+            }
+
+            var serializer = new Ical.Net.Serialization.CalendarSerializer();
+            var calendarString = serializer.SerializeToString(calendar);
+
+            var fileName = "zajecia.ics";
+            var fileBytes = System.Text.Encoding.UTF8.GetBytes(calendarString);
+
+            return File(fileBytes, "text/calendar", fileName);
         }
     }
 }
