@@ -4,6 +4,13 @@
     ViewData["Title"] = "Register";
 }
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
 <h1>@ViewData["Title"]</h1>
 
 <!-- Formularz rejestracji -->
@@ -49,10 +56,3 @@
     <button type="submit" class="btn btn-primary">Register</button>
 </form>
 
-<!-- Jeśli rejestracja powiodła się, wyświetl komunikat -->
-@if (TempData["SuccessMessage"] != null)
-{
-    <script>
-        alert('@TempData["SuccessMessage"]');
-    </script>
-}

@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Student Schedule Manager</title>
+    <title>@ViewData["Title"] Student Schedule Manager</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Projekt-programowanie.styles.css" asp-append-version="true" />
     <link href="https://cdn.syncfusion.com/ej2/20.3.47/material.css" rel="stylesheet" />
-    
+
 </head>
 <body>
     <header>
@@ -22,19 +22,28 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <div class="d-flex align-items-center">
-                            <div class="dropdown">
-                                <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Survey
-                                </button>
-                                <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
-                                    <li>
-                                        <a class="dropdown-item" asp-controller="Survey" asp-action="Index">
-                                            Survey list
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-							@if (User.IsInRole("admin") || User.IsInRole("employee"))
+                            
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="dropdown">
+                                    <a asp-controller="Scheduler" asp-action="Index" class="btn btn-light border" type="button">
+                                        Scheduler
+                                    </a>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Survey
+                                    </button>
+                                    <ul class="dropdown-menu shadow-sm" aria-labelledby="dropdownMenuButton" style="border: 1px solid #dee2e6; border-radius: 0.25rem;">
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Survey" asp-action="Index">
+                                                Survey list
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
+                            @if (User.IsInRole("admin") || User.IsInRole("employee"))
                             {
                                 <div class="dropdown">
                                     <button class="btn btn-light border" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -71,17 +80,7 @@
                                         </li>
                                     </ul>
                                 </div>
-
-
                             }
-                            @if(User.Identity.IsAuthenticated)
-                            {
-                                <div class="dropdown">
-                                    <a asp-controller="Scheduler" asp-action="Index" class="btn btn-light border" type="button">
-                                        Scheduler
-                                    </a>
-                                </div>
-                            } 
                         </div>
                     </ul>
                     <partial name="_LoginPartial" />
@@ -97,7 +96,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - Student Schedule Manager
+            &copy; 2025 - Student Schedule Manager
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
