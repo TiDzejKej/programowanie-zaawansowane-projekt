@@ -22,4 +22,10 @@
     <PackageReference Include="Syncfusion.Licensing" Version="28.1.37" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\ContactForm\Index.cshtml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
