@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProjektProgramowanie.Models;
-using Syncfusion.EJ2.FileManager;
-using System.Threading.Tasks;
 
 namespace ProjektProgramowanie.Controllers
 {
@@ -96,62 +94,49 @@ namespace ProjektProgramowanie.Controllers
 							return View(model);
 						}
 					}
-					TempData["SuccessMessage"] = "Your account has been created successfully!";
-
+					TempData["SuccessMessage"] = $"Account {user.Email} has been created successfully!";
 
 					return View(model);
 				}
-
 				foreach (var error in result.Errors)
 				{
 					ModelState.AddModelError(string.Empty, error.Description);
 				}
 			}
-
 			return View(model);
 		}
 
-		
+        // GET: Account/Login
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                if (result.Succeeded)
+                {
+                    return RedirectToLocal(returnUrl);
+                }
 
-		// GET: Account/Login
-		public IActionResult Login()
-		{
-			return View(new LoginViewModel()); // Upewnij się, że przekazujesz pusty model, aby uniknąć null
-		}
 
-		// POST: Account/Login
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
-		{
-			if (ModelState.IsValid)
-			{
-				// Jeżeli logowanie się powiedzie, użytkownik zostanie przekierowany do strony, z której chciał przejść
-				var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+				TempData["FailMessage"] = "The user name or password is incorrect";
+                return RedirectToAction(nameof(Login)); 
+            }
 
-				if (result.Succeeded)
-				{
-					return RedirectToLocal(returnUrl);  // Przekierowanie użytkownika na poprzednią stronę lub domyślną
-				}
+            return View(model);
+        }
 
-				ModelState.AddModelError(string.Empty, "Nieprawidłowy login lub hasło.");  // Błąd logowania
-			}
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
+        }
 
-			return View(model);  // Jeżeli formularz jest niepoprawny, zwrócenie widoku z komunikatem o błędzie
-		}
-
-		// Przekierowanie użytkownika do odpowiedniej strony po zalogowaniu
-		private IActionResult RedirectToLocal(string returnUrl)
-		{
-			if (Url.IsLocalUrl(returnUrl))
-			{
-				return Redirect(returnUrl);
-			}
-			return RedirectToAction("Index", "Home");  // Przekierowanie do strony głównej
-		}
-
-		// GET: Account/Detail/{id}
-		public async Task<IActionResult> Detail(string id)
+        // GET: Account/Detail/{id}
+        public async Task<IActionResult> Detail(string id)
 		{
 			if (id == null)
 			{
@@ -180,39 +165,65 @@ namespace ProjektProgramowanie.Controllers
 			return View(model);
 		}
 
-		public async Task<IActionResult> Edit(string id)
-		{
-			var user = await _userManager.FindByIdAsync(id);
-			if (user == null)
-			{
-				return NotFound();
-			}
+        // GET: Account/Delete/{id}
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                TempData["ErrorMessage"] = "User not found.";
+                return RedirectToAction("Index");
+            }
 
-			// Pobieranie dostępnych ról
-			var roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "User not found.";
+                return RedirectToAction("Index");
+            }
 
-			// Pobieranie ról przypisanych do użytkownika
-			var userRoles = await _userManager.GetRolesAsync(user);
+            var model = new UserWithRolesViewModel
+            {
+                UserId = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Adress = user.Adress,
+                CreatedAt = user.CreatedAt
+            };
 
-			var model = new UserWithRolesViewModel
-			{
-				UserId = user.Id,
-				FirstName = user.FirstName,
-				LastName = user.LastName,
-				Email = user.Email,
-				Adress = user.Adress,
-				CreatedAt = user.CreatedAt,
-				Roles = roles,  // Dostępne role
-				UserRoles = userRoles // Role przypisane do użytkownika
-			};
+            return View(model);
+        }
 
-			return View(model);
-		}
+        // POST: Account/DeleteConfirmed/{id}
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                TempData["ErrorMessage"] = "User not found.";
+                return RedirectToAction("Index");
+            }
 
-	}
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "User not found.";
+                return RedirectToAction("Index");
+            }
 
-
-
-
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "User has been successfully deleted.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "An error occurred while deleting the user.";
+            }
+            return RedirectToAction("Index");
+        }
+    }
 }
 
