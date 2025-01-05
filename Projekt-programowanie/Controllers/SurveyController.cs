@@ -90,7 +90,8 @@ namespace ProjektProgramowanie.Controllers
 
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
 		public IActionResult Delete(int id)
 		{
 			var survey = _context.Surveys.Find(id);
