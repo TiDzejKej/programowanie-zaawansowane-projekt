@@ -70,11 +70,19 @@ Uruchom migracje, aby utworzyæ schemat bazy danych:
 dotnet ef database update
 ```
 
+### Podczas tworzenia schematu bazy danych, w `ApplicationDbContext` s¹ automatycznie tworzeni domyœlni u¿ytkownicy oraz role. 
+Odpowiadaj¹ za to metody `SeedRoles` oraz `SeedUsers` w klasie `ApplicationDbContext`.
+Loginy oraz has³a dostêpne s¹ w pliku `ApplicationDbContext`.
+
+ 
+
 ### Krok 4: Uruchomienie Aplikacji
 Uruchom aplikacjê z poziomu GUI b¹dŸ komend¹:
 ```bash
 dotnet run
 ```
+
+
 
 ## Struktura Projektu
 
