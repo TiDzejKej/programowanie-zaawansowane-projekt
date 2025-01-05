@@ -11,15 +11,18 @@
    4. [Krok 4: Uruchomienie Aplikacji](#krok-4-uruchomienie-aplikacji)
 5. [Struktura Projektu](#struktura-projektu)
    1. [Foldery i Pliki](#foldery-i-pliki)
-   2. [Modele](#modele)
+   2. [Kontrolery](#kontrolery)
+   3. [G³ówne Metody Kontrolerów i Uprawnienia](#g³owne-metody-kontrolerow)
+   3. [Modele](#modele)
+   4. [Widoki](#widoki)
 6. [Opis Dzia³ania Aplikacji](#opis-dzia³ania-aplikacji)
    1. [Rejestracja i Logowanie](#rejestracja-i-logowanie)
    2. [Zarz¹dzanie U¿ytkownikami](#zarz¹dzanie-u¿ytkownikami)
    3. [Zarz¹dzanie Grupami](#zarz¹dzanie-grupami)
    4. [Zarz¹dzanie Lekcjami](#zarz¹dzanie-lekcjami)
    5. [Zarz¹dzanie Ankietami](#zarz¹dzanie-ankietami)
-   6. [Formularze Kontaktowe](#formularze-kontaktowe)
-   7. [Eksportowanie Lekcji](#eksportowanie-lekcji)]
+   6. [Eksportowanie Lekcji](#eksportowanie-lekcji)]
+   7. [Formularze Kontaktowe](#formularze-kontaktowe)
 
 ## Opis Projektu
 Projekt jest aplikacj¹ webow¹ opart¹ na technologii ASP.NET Core Blazor, która umo¿liwia zarz¹dzanie u¿ytkownikami, grupami, lekcjami oraz ankietami. Aplikacja wykorzystuje ASP.NET Core Identity do zarz¹dzania u¿ytkownikami i rolami.
@@ -92,6 +95,53 @@ dotnet run
 - **GroupsController**: Odpowiada za zarz¹dzanie grupami, w tym tworzenie, edycjê, usuwanie oraz wyœwietlanie listy grup.
 - **SchedulerController**: Odpowiada za zarz¹dzanie harmonogramem lekcji, w tym tworzenie, edycjê, usuwanie oraz wyœwietlanie lekcji. Zawiera równie¿ funkcje do eksportowania lekcji do formatu iCalendar.
 
+### G³ówne Metody Kontrolerów i Uprawnienia
+
+### HomeController
+- **Index**: Wyœwietla stronê g³ówn¹ aplikacji. Dostêpna dla wszystkich zalogowanych u¿ytkowników.
+- **Privacy**: Wyœwietla stronê prywatnoœci. Dostêpna dla wszystkich u¿ytkowników.
+
+### AccountController
+- **Register**: Wyœwietla formularz rejestracji nowego u¿ytkownika. Dostêpna tylko dla administratorów.
+- **Register (POST)**: Przetwarza dane rejestracyjne i tworzy nowe konto u¿ytkownika. Dostêpna tylko dla administratorów.
+- **Login**: Wyœwietla formularz logowania. Dostêpna dla wszystkich u¿ytkowników.
+- **Login (POST)**: Przetwarza dane logowania i loguje u¿ytkownika. Dostêpna dla wszystkich u¿ytkowników.
+- **Logout**: Wylogowuje u¿ytkownika. Dostêpna dla zalogowanych u¿ytkowników.
+- **Edit**: Wyœwietla formularz edycji profilu u¿ytkownika. Dostêpna administratorów.
+- **Edit (POST)**: Przetwarza dane edycji profilu i aktualizuje konto u¿ytkownika. Dostêpna dla administratorów.
+- **Delete**: Wyœwietla formularz usuwania konta u¿ytkownika. Dostêpna dla administratorów.
+- **Delete (POST)**: Przetwarza dane usuwania konta i usuwa konto u¿ytkownika. Dostêpna dla administratorów.
+
+### SurveyController
+- **Create**: Wyœwietla formularz tworzenia nowej ankiety. Dostêpna dla zalogowanych studentów.
+- **Create (POST)**: Przetwarza dane ankiety i tworzy now¹ ankietê. Dostêpna dla zalogowanych studentów.
+- **Index**: Wyœwietla listê ankiet. Dostêpna dla zalogowanych studentów, studenci widz¹ tylko swoje ankiety. Administrator widzi wszystkie ankiety.
+- **Detail**: Wyœwietla szczegó³y ankiety. Dostêpna dla administratorów.
+- **Delete (POST)**: Usuwa ankietê. Dostêpna dla administratorów.
+
+### ContactFormController
+- **Index**: Wyœwietla formularz kontaktowy. Dostêpna dla wszystkich u¿ytkowników.
+- **SendEmail (POST)**: Przetwarza dane formularza kontaktowego i wysy³a wiadomoœæ. Dostêpna dla wszystkich u¿ytkowników.
+- **List**: Wyœwietla listê przes³anych formularzy kontaktowych. Dostêpna dla administratorów.
+
+### GroupsController
+- **Index**: Wyœwietla listê grup. Dostêpna dla administratorów i pracowników.
+- **Create**: Wyœwietla formularz tworzenia nowej grupy. Dostêpna dla administratorów i pracowników.
+- **Create (POST)**: Przetwarza dane grupy i tworzy now¹ grupê. Dostêpna dla administratorów i pracowników.
+- **Edit**: Wyœwietla formularz edycji grupy. Dostêpna dla administratorów i pracowników.
+- **Edit (POST)**: Przetwarza dane edycji grupy i aktualizuje grupê. Dostêpna dla administratorów i pracowników.
+- **Delete**: Wyœwietla formularz usuwania grupy. Dostêpna dla administratorów i pracowników.
+- **DeleteConfirmed (POST)**: Usuwa grupê. Dostêpna dla administratorów i pracowników.
+
+### SchedulerController
+- **Index**: Wyœwietla harmonogram lekcji. Dostêpna dla zalogowanych u¿ytkowników.
+- **GetGroups**: Zwraca listê grup. Dostêpna dla administratorów, pracowników, wyk³adowców i studentów.
+- **AddLesson (POST)**: Dodaje now¹ lekcjê. Dostêpna dla administratorów i pracowników.
+- **UpdateLesson (POST)**: Aktualizuje lekcjê. Dostêpna dla administratorów i pracowników.
+- **ValidateLesson (POST)**: Waliduje lekcjê pod k¹tem konfliktów czasowych. Dostêpna dla administratorów i pracowników.
+- **DeleteLesson (POST)**: Usuwa lekcjê. Dostêpna dla administratorów i pracowników.
+
+
 ### Modele
 - **ApplicationUser**: Reprezentuje u¿ytkownika aplikacji, zawiera dane takie jak nazwa u¿ytkownika, adres e-mail, imiê, nazwisko, adres zamieszkania oraz inne informacje powi¹zane z u¿ytkownikiem.
 - **Group**: Reprezentuje grupê, zawiera dane takie jak nazwa grupy, identyfikator nauczyciela oraz listê studentów przypisanych do grupy.
@@ -130,15 +180,15 @@ dotnet run
 
 W aplikacji proces rejestracji jest dostêpny tylko dla administratorów. 
 
-- **Rejestracja:**  
-  Aby zarejestrowaæ nowego u¿ytkownika, nale¿y przejœæ do formularza rejestracji, dostêpnego tylko dla administratora. W formularzu wymagane s¹ dane, takie jak imiê, nazwisko, adres e-mail, has³o, adres zamieszkania oraz rola u¿ytkownika. Po wype³nieniu formularza administrator mo¿e utworzyæ konto. U¿ytkownik zostaje automatycznie przypisany do roli, adres email jest ju¿ potwierdzony.
-
-![register!](wwwroot/images/register.png)
-
 - **Logowanie:**  
   U¿ytkownicy mog¹ logowaæ siê, podaj¹c swój e-mail i has³o. Jeœli dane s¹ poprawne, u¿ytkownik zostaje zalogowany i przekierowany na stronê g³ówn¹. 
 
 ![login!](wwwroot/images/login.png)
+
+- **Rejestracja:**  
+  Aby zarejestrowaæ nowego u¿ytkownika, nale¿y przejœæ do formularza rejestracji, dostêpnego tylko dla administratora. W formularzu wymagane s¹ dane, takie jak imiê, nazwisko, adres e-mail, has³o, adres zamieszkania oraz rola u¿ytkownika. Po wype³nieniu formularza administrator mo¿e utworzyæ konto. U¿ytkownik zostaje automatycznie przypisany do roli, adres email jest ju¿ potwierdzony.
+
+![register!](wwwroot/images/register.png)
 
 - **Uwaga:** Rejestracja nowych u¿ytkowników jest dostêpna tylko dla administratorów aplikacji.
 
@@ -178,6 +228,8 @@ Administratorzy, pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje. Ka¿da lekcja
 ![lessons!](wwwroot/images/lesson_end.png)
 ![lessons!](wwwroot/images/lesson_end2.png)
 
+### Eksportowanie Lekcji
+U¿ytkownicy mog¹ eksportowaæ harmonogram lekcji do formatu iCalendar, co umo¿liwia importowanie lekcji do kalendarzy zewnêtrznych aplikacji, takich jak Google Calendar czy Microsoft Outlook.
 
 ### Zarz¹dzanie Ankietami
 Studenci mog¹ tworzyæ ankiety po zakoñczonych zajêciach, oceniaj¹c kursy i dodaj¹c rekomendacje. Administratorzy mog¹ przegl¹daæ listê ankiet oraz szczegó³y poszczególnych ankiet. Studenci mog¹ przegl¹daæ tylko swoje ankiety.
@@ -192,5 +244,3 @@ Niezarejestrowani u¿ytkownicy mog¹ wysy³aæ formularze kontaktowe, podaj¹c tytu³,
 
 ![contact!](wwwroot/images/contact_form.png)
 
-### Eksportowanie Lekcji
-U¿ytkownicy mog¹ eksportowaæ harmonogram lekcji do formatu iCalendar, co umo¿liwia importowanie lekcji do kalendarzy zewnêtrznych aplikacji, takich jak Google Calendar czy Microsoft Outlook.
