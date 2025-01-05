@@ -1,3 +1,5 @@
+# Student Schedule Manager
+
 ## Opis Projektu
 Projekt jest aplikacją webową opartą na technologii ASP.NET Core Blazor, która umożliwia zarządzanie użytkownikami, grupami, lekcjami oraz ankietami. Aplikacja wykorzystuje ASP.NET Core Identity do zarządzania użytkownikami i rolami.
 
