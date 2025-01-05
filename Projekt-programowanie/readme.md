@@ -1,6 +1,6 @@
 # Dokumentacja Projektu
 
-## Spis Treœci
+## Spis TreÅ›ci
 1. [Opis Projektu](#opis-projektu)
 2. [Autorzy](#autorzy)
 3. [Wymagania Systemowe](#wymagania-systemowe)
@@ -12,24 +12,24 @@
 5. [Struktura Projektu](#struktura-projektu)
    1. [Foldery i Pliki](#foldery-i-pliki)
    2. [Kontrolery](#kontrolery)
-   3. [G³ówne Metody Kontrolerów i Uprawnienia](#g³owne-metody-kontrolerow)
+   3. [GÅ‚Ã³wne Metody KontrolerÃ³w i Uprawnienia](#gÅ‚owne-metody-kontrolerow)
    3. [Modele](#modele)
    4. [Widoki](#widoki)
-6. [Opis Dzia³ania Aplikacji](#opis-dzia³ania-aplikacji)
+6. [Opis DziaÅ‚ania Aplikacji](#opis-dziaÅ‚ania-aplikacji)
    1. [Rejestracja i Logowanie](#rejestracja-i-logowanie)
-   2. [Zarz¹dzanie U¿ytkownikami](#zarz¹dzanie-u¿ytkownikami)
-   3. [Zarz¹dzanie Grupami](#zarz¹dzanie-grupami)
-   4. [Zarz¹dzanie Lekcjami](#zarz¹dzanie-lekcjami)
-   5. [Zarz¹dzanie Ankietami](#zarz¹dzanie-ankietami)
+   2. [ZarzÄ…dzanie UÅ¼ytkownikami](#zarzÄ…dzanie-uÅ¼ytkownikami)
+   3. [ZarzÄ…dzanie Grupami](#zarzÄ…dzanie-grupami)
+   4. [ZarzÄ…dzanie Lekcjami](#zarzÄ…dzanie-lekcjami)
+   5. [ZarzÄ…dzanie Ankietami](#zarzÄ…dzanie-ankietami)
    6. [Eksportowanie Lekcji](#eksportowanie-lekcji)]
    7. [Formularze Kontaktowe](#formularze-kontaktowe)
 
 ## Opis Projektu
-Projekt jest aplikacj¹ webow¹ opart¹ na technologii ASP.NET Core Blazor, która umo¿liwia zarz¹dzanie u¿ytkownikami, grupami, lekcjami oraz ankietami. Aplikacja wykorzystuje ASP.NET Core Identity do zarz¹dzania u¿ytkownikami i rolami.
+Projekt jest aplikacjÄ… webowÄ… opartÄ… na technologii ASP.NET Core Blazor, ktÃ³ra umoÅ¼liwia zarzÄ…dzanie uÅ¼ytkownikami, grupami, lekcjami oraz ankietami. Aplikacja wykorzystuje ASP.NET Core Identity do zarzÄ…dzania uÅ¼ytkownikami i rolami.
 
 ## Autorzy
-- Tomasz Kryœ
-- Sebastian Koz³owski
+- Tomasz KryÅ›
+- Sebastian KozÅ‚owski
 
 ## Wymagania Systemowe
 - .NET 8 SDK
@@ -39,15 +39,15 @@ Projekt jest aplikacj¹ webow¹ opart¹ na technologii ASP.NET Core Blazor, która u
 ## Konfiguracja Projektu
 
 ### Krok 1: Klonowanie Repozytorium
-Skopiuj repozytorium na swój lokalny komputer:
+Skopiuj repozytorium na swÃ³j lokalny komputer:
 
 ```bash
-git clone https://github.com/TwojeRepozytorium/Projekt-programowanie.git
+git clone git clone https://github.com/TwojeRepozytorium/Projekt-programowanie.git
 cd Projekt-programowanie
 ```
 
 ### Krok 2: Konfiguracja Bazy Danych
-Upewnij siê, ¿e masz zainstalowany SQL Server. Skonfiguruj po³¹czenie z baz¹ danych w pliku appsettings.json:
+Upewnij siÄ™, Å¼e masz zainstalowany SQL Server. Skonfiguruj poÅ‚Ä…czenie z bazÄ… danych w pliku appsettings.json:
 
 ```json
 {
@@ -65,18 +65,18 @@ Upewnij siê, ¿e masz zainstalowany SQL Server. Skonfiguruj po³¹czenie z baz¹ dan
 ```
 
 ### Krok 3: Przygotowanie Bazy Danych
-Uruchom migracje, aby utworzyæ schemat bazy danych:
+Uruchom migracje, aby utworzyÄ‡ schemat bazy danych:
 ```bash
 dotnet ef database update
 ```
 
-### Podczas tworzenia schematu bazy danych, w `ApplicationDbContext` s¹ automatycznie tworzeni domyœlni u¿ytkownicy oraz role. (metoda `SeedUsers`)
-Loginy oraz has³a dostêpne s¹ w pliku `ApplicationDbContext`.
+### Podczas tworzenia schematu bazy danych, w `ApplicationDbContext` sÄ… automatycznie tworzeni domyÅ›lni uÅ¼ytkownicy oraz role. (metoda `SeedUsers`)
+Loginy oraz hasÅ‚a dostÄ™pne sÄ… w pliku `ApplicationDbContext`.
 
  
 
 ### Krok 4: Uruchomienie Aplikacji
-Uruchom aplikacjê z poziomu GUI b¹dŸ komend¹:
+Uruchom aplikacjÄ™ z poziomu GUI bÄ…dÅº komendÄ…:
 ```bash
 dotnet run
 ```
@@ -86,145 +86,145 @@ dotnet run
 ## Struktura Projektu
 
 ### Foldery i Pliki
-- **Controllers/**: Zawiera kontrolery MVC, które obs³uguj¹ logikê aplikacji i zarz¹dzaj¹ widokami.
-- **Data/**: Zawiera kontekst bazy danych (`ApplicationDbContext`) oraz metody seeda, które inicjalizuj¹ dane w bazie danych.
-- **Models/**: Zawiera modele danych u¿ywane w aplikacji, które reprezentuj¹ obiekty i struktury danych.
-- **Views/**: Zawiera widoki Razor Pages, które s¹ u¿ywane do renderowania interfejsu u¿ytkownika.
-- **wwwroot/**: Zawiera statyczne pliki, takie jak CSS, JavaScript, obrazy itp., które s¹ wykorzystywane w aplikacji.
-- **Program.cs**: G³ówny plik uruchamiaj¹cy aplikacjê, który konfiguruje us³ugi i uruchamia aplikacjê.
-- **appsettings.json**: Plik konfiguracyjny aplikacji, w którym przechowywane s¹ ustawienia po³¹czenia z baz¹ danych oraz inne parametry konfiguracyjne.
+- **Controllers/**: Zawiera kontrolery MVC, ktÃ³re obsÅ‚ugujÄ… logikÄ™ aplikacji i zarzÄ…dzajÄ… widokami.
+- **Data/**: Zawiera kontekst bazy danych (`ApplicationDbContext`) oraz metody seeda, ktÃ³re inicjalizujÄ… dane w bazie danych.
+- **Models/**: Zawiera modele danych uÅ¼ywane w aplikacji, ktÃ³re reprezentujÄ… obiekty i struktury danych.
+- **Views/**: Zawiera widoki Razor Pages, ktÃ³re sÄ… uÅ¼ywane do renderowania interfejsu uÅ¼ytkownika.
+- **wwwroot/**: Zawiera statyczne pliki, takie jak CSS, JavaScript, obrazy itp., ktÃ³re sÄ… wykorzystywane w aplikacji.
+- **Program.cs**: GÅ‚Ã³wny plik uruchamiajÄ…cy aplikacjÄ™, ktÃ³ry konfiguruje usÅ‚ugi i uruchamia aplikacjÄ™.
+- **appsettings.json**: Plik konfiguracyjny aplikacji, w ktÃ³rym przechowywane sÄ… ustawienia poÅ‚Ä…czenia z bazÄ… danych oraz inne parametry konfiguracyjne.
 
 ### Kontrolery
-- **HomeController**: Odpowiada za obs³ugê g³ównych stron aplikacji, takich jak strona g³ówna i strona prywatnoœci. Zawiera równie¿ akcje do zarz¹dzania u¿ytkownikami.
-- **AccountController**: Odpowiada za zarz¹dzanie kontami u¿ytkowników, w tym rejestracjê, logowanie, edycjê profilu, zmianê has³a oraz usuwanie konta.
-- **SurveyController**: Odpowiada za zarz¹dzanie ankietami, w tym tworzenie, wyœwietlanie, usuwanie oraz przegl¹danie szczegó³ów ankiet.
-- **ContactFormController**: Odpowiada za obs³ugê formularzy kontaktowych, w tym wyœwietlanie formularza, wysy³anie wiadomoœci oraz przegl¹danie listy przes³anych formularzy.
-- **GroupsController**: Odpowiada za zarz¹dzanie grupami, w tym tworzenie, edycjê, usuwanie oraz wyœwietlanie listy grup.
-- **SchedulerController**: Odpowiada za zarz¹dzanie harmonogramem lekcji, w tym tworzenie, edycjê, usuwanie oraz wyœwietlanie lekcji. Zawiera równie¿ funkcje do eksportowania lekcji do formatu iCalendar.
+- **HomeController**: Odpowiada za obsÅ‚ugÄ™ gÅ‚Ã³wnych stron aplikacji, takich jak strona gÅ‚Ã³wna i strona prywatnoÅ›ci. Zawiera rÃ³wnieÅ¼ akcje do zarzÄ…dzania uÅ¼ytkownikami.
+- **AccountController**: Odpowiada za zarzÄ…dzanie kontami uÅ¼ytkownikÃ³w, w tym rejestracjÄ™, logowanie, edycjÄ™ profilu, zmianÄ™ hasÅ‚a oraz usuwanie konta.
+- **SurveyController**: Odpowiada za zarzÄ…dzanie ankietami, w tym tworzenie, wyÅ›wietlanie, usuwanie oraz przeglÄ…danie szczegÃ³Å‚Ã³w ankiet.
+- **ContactFormController**: Odpowiada za obsÅ‚ugÄ™ formularzy kontaktowych, w tym wyÅ›wietlanie formularza, wysyÅ‚anie wiadomoÅ›ci oraz przeglÄ…danie listy przesÅ‚anych formularzy.
+- **GroupsController**: Odpowiada za zarzÄ…dzanie grupami, w tym tworzenie, edycjÄ™, usuwanie oraz wyÅ›wietlanie listy grup.
+- **SchedulerController**: Odpowiada za zarzÄ…dzanie harmonogramem lekcji, w tym tworzenie, edycjÄ™, usuwanie oraz wyÅ›wietlanie lekcji. Zawiera rÃ³wnieÅ¼ funkcje do eksportowania lekcji do formatu iCalendar.
 
-### G³ówne Metody Kontrolerów i Uprawnienia
+### GÅ‚Ã³wne Metody KontrolerÃ³w i Uprawnienia
 
 ### HomeController
-- **Index**: Wyœwietla stronê g³ówn¹ aplikacji. Dostêpna dla wszystkich zalogowanych u¿ytkowników.
-- **Privacy**: Wyœwietla stronê prywatnoœci. Dostêpna dla wszystkich u¿ytkowników.
+- **Index**: WyÅ›wietla stronÄ™ gÅ‚Ã³wnÄ… aplikacji. DostÄ™pna dla wszystkich zalogowanych uÅ¼ytkownikÃ³w.
+- **Privacy**: WyÅ›wietla stronÄ™ prywatnoÅ›ci. DostÄ™pna dla wszystkich uÅ¼ytkownikÃ³w.
 
 ### AccountController
-- **Register**: Wyœwietla formularz rejestracji nowego u¿ytkownika. Dostêpna tylko dla administratorów.
-- **Register (POST)**: Przetwarza dane rejestracyjne i tworzy nowe konto u¿ytkownika. Dostêpna tylko dla administratorów.
-- **Login**: Wyœwietla formularz logowania. Dostêpna dla wszystkich u¿ytkowników.
-- **Login (POST)**: Przetwarza dane logowania i loguje u¿ytkownika. Dostêpna dla wszystkich u¿ytkowników.
-- **Logout**: Wylogowuje u¿ytkownika. Dostêpna dla zalogowanych u¿ytkowników.
-- **Edit**: Wyœwietla formularz edycji profilu u¿ytkownika. Dostêpna administratorów.
-- **Edit (POST)**: Przetwarza dane edycji profilu i aktualizuje konto u¿ytkownika. Dostêpna dla administratorów.
-- **Delete**: Wyœwietla formularz usuwania konta u¿ytkownika. Dostêpna dla administratorów.
-- **Delete (POST)**: Przetwarza dane usuwania konta i usuwa konto u¿ytkownika. Dostêpna dla administratorów.
+- **Register**: WyÅ›wietla formularz rejestracji nowego uÅ¼ytkownika. DostÄ™pna tylko dla administratorÃ³w.
+- **Register (POST)**: Przetwarza dane rejestracyjne i tworzy nowe konto uÅ¼ytkownika. DostÄ™pna tylko dla administratorÃ³w.
+- **Login**: WyÅ›wietla formularz logowania. DostÄ™pna dla wszystkich uÅ¼ytkownikÃ³w.
+- **Login (POST)**: Przetwarza dane logowania i loguje uÅ¼ytkownika. DostÄ™pna dla wszystkich uÅ¼ytkownikÃ³w.
+- **Logout**: Wylogowuje uÅ¼ytkownika. DostÄ™pna dla zalogowanych uÅ¼ytkownikÃ³w.
+- **Edit**: WyÅ›wietla formularz edycji profilu uÅ¼ytkownika. DostÄ™pna administratorÃ³w.
+- **Edit (POST)**: Przetwarza dane edycji profilu i aktualizuje konto uÅ¼ytkownika. DostÄ™pna dla administratorÃ³w.
+- **Delete**: WyÅ›wietla formularz usuwania konta uÅ¼ytkownika. DostÄ™pna dla administratorÃ³w.
+- **Delete (POST)**: Przetwarza dane usuwania konta i usuwa konto uÅ¼ytkownika. DostÄ™pna dla administratorÃ³w.
 
 ### SurveyController
-- **Create**: Wyœwietla formularz tworzenia nowej ankiety. Dostêpna dla zalogowanych studentów.
-- **Create (POST)**: Przetwarza dane ankiety i tworzy now¹ ankietê. Dostêpna dla zalogowanych studentów.
-- **Index**: Wyœwietla listê ankiet. Dostêpna dla zalogowanych studentów, studenci widz¹ tylko swoje ankiety. Administrator widzi wszystkie ankiety.
-- **Detail**: Wyœwietla szczegó³y ankiety. Dostêpna dla administratorów.
-- **Delete (POST)**: Usuwa ankietê. Dostêpna dla administratorów.
+- **Create**: WyÅ›wietla formularz tworzenia nowej ankiety. DostÄ™pna dla zalogowanych studentÃ³w.
+- **Create (POST)**: Przetwarza dane ankiety i tworzy nowÄ… ankietÄ™. DostÄ™pna dla zalogowanych studentÃ³w.
+- **Index**: WyÅ›wietla listÄ™ ankiet. DostÄ™pna dla zalogowanych studentÃ³w, studenci widzÄ… tylko swoje ankiety. Administrator widzi wszystkie ankiety.
+- **Detail**: WyÅ›wietla szczegÃ³Å‚y ankiety. DostÄ™pna dla administratorÃ³w.
+- **Delete (POST)**: Usuwa ankietÄ™. DostÄ™pna dla administratorÃ³w.
 
 ### ContactFormController
-- **Index**: Wyœwietla formularz kontaktowy. Dostêpna dla wszystkich u¿ytkowników.
-- **SendEmail (POST)**: Przetwarza dane formularza kontaktowego i wysy³a wiadomoœæ. Dostêpna dla wszystkich u¿ytkowników.
-- **List**: Wyœwietla listê przes³anych formularzy kontaktowych. Dostêpna dla administratorów.
+- **Index**: WyÅ›wietla formularz kontaktowy. DostÄ™pna dla wszystkich uÅ¼ytkownikÃ³w.
+- **SendEmail (POST)**: Przetwarza dane formularza kontaktowego i wysyÅ‚a wiadomoÅ›Ä‡. DostÄ™pna dla wszystkich uÅ¼ytkownikÃ³w.
+- **List**: WyÅ›wietla listÄ™ przesÅ‚anych formularzy kontaktowych. DostÄ™pna dla administratorÃ³w.
 
 ### GroupsController
-- **Index**: Wyœwietla listê grup. Dostêpna dla administratorów i pracowników.
-- **Create**: Wyœwietla formularz tworzenia nowej grupy. Dostêpna dla administratorów i pracowników.
-- **Create (POST)**: Przetwarza dane grupy i tworzy now¹ grupê. Dostêpna dla administratorów i pracowników.
-- **Edit**: Wyœwietla formularz edycji grupy. Dostêpna dla administratorów i pracowników.
-- **Edit (POST)**: Przetwarza dane edycji grupy i aktualizuje grupê. Dostêpna dla administratorów i pracowników.
-- **Delete**: Wyœwietla formularz usuwania grupy. Dostêpna dla administratorów i pracowników.
-- **DeleteConfirmed (POST)**: Usuwa grupê. Dostêpna dla administratorów i pracowników.
+- **Index**: WyÅ›wietla listÄ™ grup. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **Create**: WyÅ›wietla formularz tworzenia nowej grupy. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **Create (POST)**: Przetwarza dane grupy i tworzy nowÄ… grupÄ™. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **Edit**: WyÅ›wietla formularz edycji grupy. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **Edit (POST)**: Przetwarza dane edycji grupy i aktualizuje grupÄ™. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **Delete**: WyÅ›wietla formularz usuwania grupy. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **DeleteConfirmed (POST)**: Usuwa grupÄ™. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
 
 ### SchedulerController
-- **Index**: Wyœwietla harmonogram lekcji. Dostêpna dla zalogowanych u¿ytkowników.
-- **GetGroups**: Zwraca listê grup. Dostêpna dla administratorów, pracowników, wyk³adowców i studentów.
-- **AddLesson (POST)**: Dodaje now¹ lekcjê. Dostêpna dla administratorów i pracowników.
-- **UpdateLesson (POST)**: Aktualizuje lekcjê. Dostêpna dla administratorów i pracowników.
-- **ValidateLesson (POST)**: Waliduje lekcjê pod k¹tem konfliktów czasowych. Dostêpna dla administratorów i pracowników.
-- **DeleteLesson (POST)**: Usuwa lekcjê. Dostêpna dla administratorów i pracowników.
+- **Index**: WyÅ›wietla harmonogram lekcji. DostÄ™pna dla zalogowanych uÅ¼ytkownikÃ³w.
+- **GetGroups**: Zwraca listÄ™ grup. DostÄ™pna dla administratorÃ³w, pracownikÃ³w, wykÅ‚adowcÃ³w i studentÃ³w.
+- **AddLesson (POST)**: Dodaje nowÄ… lekcjÄ™. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **UpdateLesson (POST)**: Aktualizuje lekcjÄ™. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **ValidateLesson (POST)**: Waliduje lekcjÄ™ pod kÄ…tem konfliktÃ³w czasowych. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
+- **DeleteLesson (POST)**: Usuwa lekcjÄ™. DostÄ™pna dla administratorÃ³w i pracownikÃ³w.
 
 
 ### Modele
-- **ApplicationUser**: Reprezentuje u¿ytkownika aplikacji, zawiera dane takie jak nazwa u¿ytkownika, adres e-mail, imiê, nazwisko, adres zamieszkania oraz inne informacje powi¹zane z u¿ytkownikiem.
-- **Group**: Reprezentuje grupê, zawiera dane takie jak nazwa grupy, identyfikator nauczyciela oraz listê studentów przypisanych do grupy.
-- **Lesson**: Reprezentuje lekcjê, zawiera dane takie jak tytu³ lekcji, czas rozpoczêcia i zakoñczenia, opis oraz identyfikator grupy, do której lekcja nale¿y.
-- **Survey**: Reprezentuje ankietê, zawiera dane takie jak identyfikator lekcji, identyfikator studenta, ocena kursu oraz rekomendacja.
-- **ContactForm**: Reprezentuje formularz kontaktowy, zawiera dane takie jak tytu³, treœæ oraz adres e-mail nadawcy.
-- **GroupEditViewModel**: Reprezentuje model widoku edycji grupy, zawiera dane takie jak identyfikator grupy, nazwa grupy, identyfikator nauczyciela, lista wybranych studentów oraz listy nauczycieli i studentów do wyboru.
-- **LoginViewModel**: Reprezentuje model widoku logowania, zawiera dane takie jak adres e-mail, has³o oraz opcjê zapamiêtania u¿ytkownika.
-- **RegisterViewModel**: Reprezentuje model widoku rejestracji, zawiera dane takie jak imiê, nazwisko, adres, adres e-mail, has³o, potwierdzenie has³a oraz rolê u¿ytkownika.
+- **ApplicationUser**: Reprezentuje uÅ¼ytkownika aplikacji, zawiera dane takie jak nazwa uÅ¼ytkownika, adres e-mail, imiÄ™, nazwisko, adres zamieszkania oraz inne informacje powiÄ…zane z uÅ¼ytkownikiem.
+- **Group**: Reprezentuje grupÄ™, zawiera dane takie jak nazwa grupy, identyfikator nauczyciela oraz listÄ™ studentÃ³w przypisanych do grupy.
+- **Lesson**: Reprezentuje lekcjÄ™, zawiera dane takie jak tytuÅ‚ lekcji, czas rozpoczÄ™cia i zakoÅ„czenia, opis oraz identyfikator grupy, do ktÃ³rej lekcja naleÅ¼y.
+- **Survey**: Reprezentuje ankietÄ™, zawiera dane takie jak identyfikator lekcji, identyfikator studenta, ocena kursu oraz rekomendacja.
+- **ContactForm**: Reprezentuje formularz kontaktowy, zawiera dane takie jak tytuÅ‚, treÅ›Ä‡ oraz adres e-mail nadawcy.
+- **GroupEditViewModel**: Reprezentuje model widoku edycji grupy, zawiera dane takie jak identyfikator grupy, nazwa grupy, identyfikator nauczyciela, lista wybranych studentÃ³w oraz listy nauczycieli i studentÃ³w do wyboru.
+- **LoginViewModel**: Reprezentuje model widoku logowania, zawiera dane takie jak adres e-mail, hasÅ‚o oraz opcjÄ™ zapamiÄ™tania uÅ¼ytkownika.
+- **RegisterViewModel**: Reprezentuje model widoku rejestracji, zawiera dane takie jak imiÄ™, nazwisko, adres, adres e-mail, hasÅ‚o, potwierdzenie hasÅ‚a oraz rolÄ™ uÅ¼ytkownika.
 - **SurveyViewModel**: Reprezentuje model widoku ankiety, zawiera dane takie jak identyfikator lekcji, identyfikator studenta, ocena kursu oraz rekomendacja.
-- **UserListViewModel**: Reprezentuje model widoku listy u¿ytkowników, zawiera listê u¿ytkowników oraz s³ownik ról u¿ytkowników.
-- **UserWithRolesViewModel**: Reprezentuje model widoku u¿ytkownika z rolami, zawiera dane takie jak identyfikator u¿ytkownika, imiê, nazwisko, adres e-mail, adres zamieszkania, data utworzenia konta oraz listy ról u¿ytkownika.
+- **UserListViewModel**: Reprezentuje model widoku listy uÅ¼ytkownikÃ³w, zawiera listÄ™ uÅ¼ytkownikÃ³w oraz sÅ‚ownik rÃ³l uÅ¼ytkownikÃ³w.
+- **UserWithRolesViewModel**: Reprezentuje model widoku uÅ¼ytkownika z rolami, zawiera dane takie jak identyfikator uÅ¼ytkownika, imiÄ™, nazwisko, adres e-mail, adres zamieszkania, data utworzenia konta oraz listy rÃ³l uÅ¼ytkownika.
 
 ### Widoki
-- **Home/Index.cshtml**: Widok strony g³ównej aplikacji.
-- **Home/Privacy.cshtml**: Widok strony prywatnoœci.
-- **Account/Register.cshtml**: Widok formularza rejestracji nowego u¿ytkownika.
+- **Home/Index.cshtml**: Widok strony gÅ‚Ã³wnej aplikacji.
+- **Home/Privacy.cshtml**: Widok strony prywatnoÅ›ci.
+- **Account/Register.cshtml**: Widok formularza rejestracji nowego uÅ¼ytkownika.
 - **Account/Login.cshtml**: Widok formularza logowania.
-- **Account/Edit.cshtml**: Widok formularza edycji profilu u¿ytkownika.
-- **Account/Detail.cshtml**: Widok szczegó³ów profilu u¿ytkownika.
-- **Account/Delete.cshtml**: Widok formularza usuwania konta u¿ytkownika.
+- **Account/Edit.cshtml**: Widok formularza edycji profilu uÅ¼ytkownika.
+- **Account/Detail.cshtml**: Widok szczegÃ³Å‚Ã³w profilu uÅ¼ytkownika.
+- **Account/Delete.cshtml**: Widok formularza usuwania konta uÅ¼ytkownika.
 - **Survey/Create.cshtml**: Widok formularza tworzenia nowej ankiety.
 - **Survey/Index.cshtml**: Widok listy ankiet.
-- **Survey/Detail.cshtml**: Widok szczegó³ów ankiety.
+- **Survey/Detail.cshtml**: Widok szczegÃ³Å‚Ã³w ankiety.
 - **ContactForm/Index.cshtml**: Widok formularza kontaktowego.
-- **ContactForm/List.cshtml**: Widok listy przes³anych formularzy kontaktowych.
+- **ContactForm/List.cshtml**: Widok listy przesÅ‚anych formularzy kontaktowych.
 - **Groups/Index.cshtml**: Widok listy grup.
 - **Groups/Edit.cshtml**: Widok formularza edycji grupy.
 - **Groups/Delete.cshtml**: Widok formularza usuwania grupy.
 - **Groups/Create.cshtml**: Widok formularza tworzenia nowej grupy.
 - **Scheduler/Index.cshtml**: Widok harmonogramu lekcji.
 
-## Opis Dzia³ania Aplikacji
+## Opis DziaÅ‚ania Aplikacji
 
 ### Rejestracja i Logowanie
 
-W aplikacji proces rejestracji jest dostêpny tylko dla administratorów. 
+W aplikacji proces rejestracji jest dostÄ™pny tylko dla administratorÃ³w. 
 
 - **Logowanie:**  
-  U¿ytkownicy mog¹ logowaæ siê, podaj¹c swój e-mail i has³o. Jeœli dane s¹ poprawne, u¿ytkownik zostaje zalogowany i przekierowany na stronê g³ówn¹. 
+  UÅ¼ytkownicy mogÄ… logowaÄ‡ siÄ™, podajÄ…c swÃ³j e-mail i hasÅ‚o. JeÅ›li dane sÄ… poprawne, uÅ¼ytkownik zostaje zalogowany i przekierowany na stronÄ™ gÅ‚Ã³wnÄ…. 
 
 ![login!](wwwroot/images/login.png)
 
 - **Rejestracja:**  
-  Aby zarejestrowaæ nowego u¿ytkownika, nale¿y przejœæ do formularza rejestracji, dostêpnego tylko dla administratora. W formularzu wymagane s¹ dane, takie jak imiê, nazwisko, adres e-mail, has³o, adres zamieszkania oraz rola u¿ytkownika. Po wype³nieniu formularza administrator mo¿e utworzyæ konto. U¿ytkownik zostaje automatycznie przypisany do roli, adres email jest ju¿ potwierdzony.
+  Aby zarejestrowaÄ‡ nowego uÅ¼ytkownika, naleÅ¼y przejÅ›Ä‡ do formularza rejestracji, dostÄ™pnego tylko dla administratora. W formularzu wymagane sÄ… dane, takie jak imiÄ™, nazwisko, adres e-mail, hasÅ‚o, adres zamieszkania oraz rola uÅ¼ytkownika. Po wypeÅ‚nieniu formularza administrator moÅ¼e utworzyÄ‡ konto. UÅ¼ytkownik zostaje automatycznie przypisany do roli, adres email jest juÅ¼ potwierdzony.
 
 ![register!](wwwroot/images/register.png)
 
-- **Uwaga:** Rejestracja nowych u¿ytkowników jest dostêpna tylko dla administratorów aplikacji.
+- **Uwaga:** Rejestracja nowych uÅ¼ytkownikÃ³w jest dostÄ™pna tylko dla administratorÃ³w aplikacji.
 
 
-### Zarz¹dzanie U¿ytkownikami
+### ZarzÄ…dzanie UÅ¼ytkownikami
 
-Administratorzy maj¹ pe³ne uprawnienia do zarz¹dzania u¿ytkownikami w aplikacji. Mog¹:
+Administratorzy majÄ… peÅ‚ne uprawnienia do zarzÄ…dzania uÅ¼ytkownikami w aplikacji. MogÄ…:
 
-- **Przegl¹danie listy u¿ytkowników** – Administratorzy mog¹ przegl¹daæ wszystkich u¿ytkowników zarejestrowanych w aplikacji oraz szczegó³y ich kont (imiê, nazwisko, adres e-mail, adres, data rejestracji).
+- **PrzeglÄ…danie listy uÅ¼ytkownikÃ³w** â€“ Administratorzy mogÄ… przeglÄ…daÄ‡ wszystkich uÅ¼ytkownikÃ³w zarejestrowanych w aplikacji oraz szczegÃ³Å‚y ich kont (imiÄ™, nazwisko, adres e-mail, adres, data rejestracji).
   
 ![users!](wwwroot/images/user_list.png)
-- **Edytowanie danych u¿ytkowników** – Administratorzy mog¹ edytowaæ dane u¿ytkowników, takie jak imiê, nazwisko, e-mail, adres, oraz przypisywaæ im odpowiednie role.
+- **Edytowanie danych uÅ¼ytkownikÃ³w** â€“ Administratorzy mogÄ… edytowaÄ‡ dane uÅ¼ytkownikÃ³w, takie jak imiÄ™, nazwisko, e-mail, adres, oraz przypisywaÄ‡ im odpowiednie role.
 
 ![edit!](wwwroot/images/user_edit.png)
-- **Przypisywanie ról** – Administratorzy maj¹ mo¿liwoœæ przypisywania ról u¿ytkownikom, co determinuje ich uprawnienia w aplikacji (np. student, wyk³adowca, pracownik).
+- **Przypisywanie rÃ³l** â€“ Administratorzy majÄ… moÅ¼liwoÅ›Ä‡ przypisywania rÃ³l uÅ¼ytkownikom, co determinuje ich uprawnienia w aplikacji (np. student, wykÅ‚adowca, pracownik).
   
-- **Usuwanie kont u¿ytkowników** – Administratorzy mog¹ usuwaæ konta u¿ytkowników, co powoduje ich trwa³e usuniêcie z systemu.
+- **Usuwanie kont uÅ¼ytkownikÃ³w** â€“ Administratorzy mogÄ… usuwaÄ‡ konta uÅ¼ytkownikÃ³w, co powoduje ich trwaÅ‚e usuniÄ™cie z systemu.
 
 ![delete!](wwwroot/images/user_delete.png)
 
 
 
-### Zarz¹dzanie Grupami
-Administratorzy i pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ grupy. Ka¿da grupa ma przypisanego nauczyciela oraz listê studentów. U¿ytkownicy mog¹ przegl¹daæ listê grup oraz szczegó³y poszczególnych grup.
+### ZarzÄ…dzanie Grupami
+Administratorzy i pracownicy mogÄ… tworzyÄ‡, edytowaÄ‡ i usuwaÄ‡ grupy. KaÅ¼da grupa ma przypisanego nauczyciela oraz listÄ™ studentÃ³w. UÅ¼ytkownicy mogÄ… przeglÄ…daÄ‡ listÄ™ grup oraz szczegÃ³Å‚y poszczegÃ³lnych grup.
 
 ![groups!](wwwroot/images/group_list.png)
 
-### Zarz¹dzanie Lekcjami
-Administratorzy, pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje. Ka¿da lekcja ma przypisany tytu³, czas rozpoczêcia i zakoñczenia, opis oraz grupê, do której nale¿y. U¿ytkownicy mog¹ przegl¹daæ harmonogram lekcji oraz szczegó³y poszczególnych lekcji.
+### ZarzÄ…dzanie Lekcjami
+Administratorzy, pracownicy mogÄ… tworzyÄ‡, edytowaÄ‡ i usuwaÄ‡ lekcje. KaÅ¼da lekcja ma przypisany tytuÅ‚, czas rozpoczÄ™cia i zakoÅ„czenia, opis oraz grupÄ™, do ktÃ³rej naleÅ¼y. UÅ¼ytkownicy mogÄ… przeglÄ…daÄ‡ harmonogram lekcji oraz szczegÃ³Å‚y poszczegÃ³lnych lekcji.
 
 ![lessons!](wwwroot/images/scheduler.png)
 ![lessons!](wwwroot/images/scheduler_day_view.png)
@@ -236,10 +236,10 @@ Administratorzy, pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje. Ka¿da lekcja
 ![lessons!](wwwroot/images/lesson_end2.png)
 
 ### Eksportowanie Lekcji
-U¿ytkownicy mog¹ eksportowaæ harmonogram lekcji do formatu iCalendar, co umo¿liwia importowanie lekcji do kalendarzy zewnêtrznych aplikacji, takich jak Google Calendar czy Microsoft Outlook.
+UÅ¼ytkownicy mogÄ… eksportowaÄ‡ harmonogram lekcji do formatu iCalendar, co umoÅ¼liwia importowanie lekcji do kalendarzy zewnÄ™trznych aplikacji, takich jak Google Calendar czy Microsoft Outlook.
 
-### Zarz¹dzanie Ankietami
-Studenci mog¹ tworzyæ ankiety po zakoñczonych zajêciach, oceniaj¹c kursy i dodaj¹c rekomendacje. Administratorzy mog¹ przegl¹daæ listê ankiet oraz szczegó³y poszczególnych ankiet. Studenci mog¹ przegl¹daæ tylko swoje ankiety.
+### ZarzÄ…dzanie Ankietami
+Studenci mogÄ… tworzyÄ‡ ankiety po zakoÅ„czonych zajÄ™ciach, oceniajÄ…c kursy i dodajÄ…c rekomendacje. Administratorzy mogÄ… przeglÄ…daÄ‡ listÄ™ ankiet oraz szczegÃ³Å‚y poszczegÃ³lnych ankiet. Studenci mogÄ… przeglÄ…daÄ‡ tylko swoje ankiety.
 
 ![surveys!](wwwroot/images/lesson_survey.png)
 ![surveys!](wwwroot/images/survey_new.png)
@@ -247,7 +247,7 @@ Studenci mog¹ tworzyæ ankiety po zakoñczonych zajêciach, oceniaj¹c kursy i dodaj
 
 
 ### Formularze Kontaktowe
-Niezarejestrowani u¿ytkownicy mog¹ wysy³aæ formularze kontaktowe, podaj¹c tytu³, treœæ oraz adres e-mail. Administratorzy mog¹ przegl¹daæ listê przes³anych formularzy kontaktowych.
+Niezarejestrowani uÅ¼ytkownicy mogÄ… wysyÅ‚aÄ‡ formularze kontaktowe, podajÄ…c tytuÅ‚, treÅ›Ä‡ oraz adres e-mail. Administratorzy mogÄ… przeglÄ…daÄ‡ listÄ™ przesÅ‚anych formularzy kontaktowych.
 
 ![contact!](wwwroot/images/contact_form.png)
 
