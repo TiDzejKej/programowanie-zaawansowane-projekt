@@ -149,7 +149,7 @@ Administratorzy maj¹ pe³ne uprawnienia do zarz¹dzania u¿ytkownikami w aplikacji.
 
 - **Przegl¹danie listy u¿ytkowników** – Administratorzy mog¹ przegl¹daæ wszystkich u¿ytkowników zarejestrowanych w aplikacji oraz szczegó³y ich kont (imiê, nazwisko, adres e-mail, adres, data rejestracji).
   
-![users!](wwwroot/images/users.png)
+![users!](wwwroot/images/user_list.png)
 - **Edytowanie danych u¿ytkowników** – Administratorzy mog¹ edytowaæ dane u¿ytkowników, takie jak imiê, nazwisko, e-mail, adres, oraz przypisywaæ im odpowiednie role.
 
 ![edit!](wwwroot/images/user_edit.png)
@@ -164,7 +164,7 @@ Administratorzy maj¹ pe³ne uprawnienia do zarz¹dzania u¿ytkownikami w aplikacji.
 ### Zarz¹dzanie Grupami
 Administratorzy i pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ grupy. Ka¿da grupa ma przypisanego nauczyciela oraz listê studentów. U¿ytkownicy mog¹ przegl¹daæ listê grup oraz szczegó³y poszczególnych grup.
 
-![groups!](wwwroot/images/groups_list.png)
+![groups!](wwwroot/images/group_list.png)
 
 ### Zarz¹dzanie Lekcjami
 Administratorzy, pracownicy i wyk³adowcy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje. Ka¿da lekcja ma przypisany tytu³, czas rozpoczêcia i zakoñczenia, opis oraz grupê, do której nale¿y. U¿ytkownicy mog¹ przegl¹daæ harmonogram lekcji oraz szczegó³y poszczególnych lekcji.
@@ -180,7 +180,7 @@ Administratorzy, pracownicy i wyk³adowcy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje.
 Studenci mog¹ tworzyæ ankiety po zakoñczonych zajêciach, oceniaj¹c kursy i dodaj¹c rekomendacje. Administratorzy mog¹ przegl¹daæ listê ankiet oraz szczegó³y poszczególnych ankiet. Studenci mog¹ przegl¹daæ tylko swoje ankiety.
 
 ### Formularze Kontaktowe
-U¿ytkownicy mog¹ wysy³aæ formularze kontaktowe, podaj¹c tytu³, treœæ oraz adres e-mail. Administratorzy mog¹ przegl¹daæ listê przes³anych formularzy kontaktowych oraz szczegó³y poszczególnych formularzy.
+NIezarejestrowani u¿ytkownicy mog¹ wysy³aæ formularze kontaktowe, podaj¹c tytu³, treœæ oraz adres e-mail. Administratorzy mog¹ przegl¹daæ listê przes³anych formularzy kontaktowych.
 
 ### Eksportowanie Lekcji
 U¿ytkownicy mog¹ eksportowaæ harmonogram lekcji do formatu iCalendar, co umo¿liwia importowanie lekcji do kalendarzy zewnêtrznych aplikacji, takich jak Google Calendar czy Microsoft Outlook.
