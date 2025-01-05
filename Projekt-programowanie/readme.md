@@ -133,12 +133,12 @@ W aplikacji proces rejestracji jest dostêpny tylko dla administratorów.
 - **Rejestracja:**  
   Aby zarejestrowaæ nowego u¿ytkownika, nale¿y przejœæ do formularza rejestracji, dostêpnego tylko dla administratora. W formularzu wymagane s¹ dane, takie jak imiê, nazwisko, adres e-mail, has³o, adres zamieszkania oraz rola u¿ytkownika. Po wype³nieniu formularza administrator mo¿e utworzyæ konto. U¿ytkownik zostaje automatycznie przypisany do roli, adres email jest ju¿ potwierdzony.
 
-- ![register!](wwwroot/images/register.png)
+![register!](wwwroot/images/register.png)
 
 - **Logowanie:**  
   U¿ytkownicy mog¹ logowaæ siê, podaj¹c swój e-mail i has³o. Jeœli dane s¹ poprawne, u¿ytkownik zostaje zalogowany i przekierowany na stronê g³ówn¹. 
 
-- ![login!](wwwroot/images/login.png)
+![login!](wwwroot/images/login.png)
 
 - **Uwaga:** Rejestracja nowych u¿ytkowników jest dostêpna tylko dla administratorów aplikacji.
 
@@ -149,19 +149,32 @@ Administratorzy maj¹ pe³ne uprawnienia do zarz¹dzania u¿ytkownikami w aplikacji.
 
 - **Przegl¹danie listy u¿ytkowników** – Administratorzy mog¹ przegl¹daæ wszystkich u¿ytkowników zarejestrowanych w aplikacji oraz szczegó³y ich kont (imiê, nazwisko, adres e-mail, adres, data rejestracji).
   
+![users!](wwwroot/images/users.png)
 - **Edytowanie danych u¿ytkowników** – Administratorzy mog¹ edytowaæ dane u¿ytkowników, takie jak imiê, nazwisko, e-mail, adres, oraz przypisywaæ im odpowiednie role.
 
+![edit!](wwwroot/images/user_edit.png)
 - **Przypisywanie ról** – Administratorzy maj¹ mo¿liwoœæ przypisywania ról u¿ytkownikom, co determinuje ich uprawnienia w aplikacji (np. student, wyk³adowca, pracownik).
   
 - **Usuwanie kont u¿ytkowników** – Administratorzy mog¹ usuwaæ konta u¿ytkowników, co powoduje ich trwa³e usuniêcie z systemu.
+
+![delete!](wwwroot/images/user_delete.png)
 
 
 
 ### Zarz¹dzanie Grupami
 Administratorzy i pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ grupy. Ka¿da grupa ma przypisanego nauczyciela oraz listê studentów. U¿ytkownicy mog¹ przegl¹daæ listê grup oraz szczegó³y poszczególnych grup.
 
+![groups!](wwwroot/images/groups_list.png)
+
 ### Zarz¹dzanie Lekcjami
 Administratorzy, pracownicy i wyk³adowcy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje. Ka¿da lekcja ma przypisany tytu³, czas rozpoczêcia i zakoñczenia, opis oraz grupê, do której nale¿y. U¿ytkownicy mog¹ przegl¹daæ harmonogram lekcji oraz szczegó³y poszczególnych lekcji.
+
+![lessons!](wwwroot/images/new_lesson.png)
+![lessons!](wwwroot/images/scheduler.png)
+![lessons!](wwwroot/images/scheduler_day_view.png)
+![lessons!](wwwroot/images/scheduler_month_view.png)
+![lessons!](wwwroot/images/scheduler_agenda.png)
+
 
 ### Zarz¹dzanie Ankietami
 Studenci mog¹ tworzyæ ankiety po zakoñczonych zajêciach, oceniaj¹c kursy i dodaj¹c rekomendacje. Administratorzy mog¹ przegl¹daæ listê ankiet oraz szczegó³y poszczególnych ankiet. Studenci mog¹ przegl¹daæ tylko swoje ankiety.
