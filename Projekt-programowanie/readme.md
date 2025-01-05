@@ -167,20 +167,30 @@ Administratorzy i pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ grupy. Ka¿da grupa 
 ![groups!](wwwroot/images/group_list.png)
 
 ### Zarz¹dzanie Lekcjami
-Administratorzy, pracownicy i wyk³adowcy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje. Ka¿da lekcja ma przypisany tytu³, czas rozpoczêcia i zakoñczenia, opis oraz grupê, do której nale¿y. U¿ytkownicy mog¹ przegl¹daæ harmonogram lekcji oraz szczegó³y poszczególnych lekcji.
+Administratorzy, pracownicy mog¹ tworzyæ, edytowaæ i usuwaæ lekcje. Ka¿da lekcja ma przypisany tytu³, czas rozpoczêcia i zakoñczenia, opis oraz grupê, do której nale¿y. U¿ytkownicy mog¹ przegl¹daæ harmonogram lekcji oraz szczegó³y poszczególnych lekcji.
 
-![lessons!](wwwroot/images/new_lesson.png)
 ![lessons!](wwwroot/images/scheduler.png)
 ![lessons!](wwwroot/images/scheduler_day_view.png)
 ![lessons!](wwwroot/images/scheduler_month_view.png)
 ![lessons!](wwwroot/images/scheduler_agenda.png)
 
+![lessons!](wwwroot/images/new_lesson.png)
+![lessons!](wwwroot/images/lesson_end.png)
+![lessons!](wwwroot/images/lesson_end2.png)
+
 
 ### Zarz¹dzanie Ankietami
 Studenci mog¹ tworzyæ ankiety po zakoñczonych zajêciach, oceniaj¹c kursy i dodaj¹c rekomendacje. Administratorzy mog¹ przegl¹daæ listê ankiet oraz szczegó³y poszczególnych ankiet. Studenci mog¹ przegl¹daæ tylko swoje ankiety.
 
+![surveys!](wwwroot/images/lesson_survey.png)
+![surveys!](wwwroot/images/survey_new.png)
+![surveys!](wwwroot/images/survey_list.png)
+
+
 ### Formularze Kontaktowe
-NIezarejestrowani u¿ytkownicy mog¹ wysy³aæ formularze kontaktowe, podaj¹c tytu³, treœæ oraz adres e-mail. Administratorzy mog¹ przegl¹daæ listê przes³anych formularzy kontaktowych.
+Niezarejestrowani u¿ytkownicy mog¹ wysy³aæ formularze kontaktowe, podaj¹c tytu³, treœæ oraz adres e-mail. Administratorzy mog¹ przegl¹daæ listê przes³anych formularzy kontaktowych.
+
+![contact!](wwwroot/images/contact_form.png)
 
 ### Eksportowanie Lekcji
 U¿ytkownicy mog¹ eksportowaæ harmonogram lekcji do formatu iCalendar, co umo¿liwia importowanie lekcji do kalendarzy zewnêtrznych aplikacji, takich jak Google Calendar czy Microsoft Outlook.
