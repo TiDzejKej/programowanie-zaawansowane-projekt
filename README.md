@@ -18,7 +18,7 @@ Projekt jest aplikacją webową opartą na technologii ASP.NET Core Blazor, któ
 Skopiuj repozytorium na swój lokalny komputer:
 
 ```bash
-git clone https://github.com/TwojeRepozytorium/Projekt-programowanie.git
+git clone 
 cd Projekt-programowanie
 ```
 
