@@ -9,12 +9,15 @@ namespace ProjektProgramowanie.Models
         public int Id { get; set; }
 
         [Required]
+        [StringLength(50)]
         public string Title { get; set; }
 
         [Required]
+        [StringLength(500)]
         public string Content { get; set; }
 
         [Required]
+        [StringLength(100)]
         public string Email { get; set; }
     }
 }

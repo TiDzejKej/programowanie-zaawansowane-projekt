@@ -1,15 +1,32 @@
-﻿namespace ProjektProgramowanie.Models
-{
-	public class UserWithRolesViewModel
-	{
-		public string UserId { get; set; }
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
-		public string Email { get; set; }
-		public string Adress { get; set; }
-		public DateTime CreatedAt { get; set; }
-		public IEnumerable<string> Roles { get; set; }
-		public IEnumerable<string> UserRoles { get; set; }
-	}
-}
+﻿using System.ComponentModel.DataAnnotations;
 
+namespace ProjektProgramowanie.Models
+{
+    public class UserWithRolesViewModel
+    {
+        [Required]
+        public string UserId { get; set; }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string Adress { get; set; }
+
+        [Required]
+        public DateTime CreatedAt { get; set; }
+
+        [Required]
+        public IEnumerable<string> Roles { get; set; }
+
+        [Required]
+        public IEnumerable<string> UserRoles { get; set; }
+    }
+}

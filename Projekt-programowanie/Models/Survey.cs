@@ -16,9 +16,11 @@ namespace ProjektProgramowanie.Models
 
 		[Required(ErrorMessage = "CourseRating is required.")]
 		[Range(1, 10, ErrorMessage = "CourseRating must be between 1 and 10.")]
-		public int CourseRating { get; set; }
+        [Display(Name = "Course rating")]
+        public int CourseRating { get; set; }
 
-		[Required(ErrorMessage = "Recommendation is required.")]
+        [Display(Name = "Recommendation")]
+        [Required(ErrorMessage = "Recommendation is required.")]
 		[StringLength(500, ErrorMessage = "Recommendation cannot exceed 500 characters.")]
 		public string Recommendation { get; set; }
 	}
