@@ -56,50 +56,14 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-    var roles = new[] { "admin", "student", "lecturer", "employee" };
-
-    foreach (var role in roles)
-    {
-        if (!await roleManager.RoleExistsAsync(role))
-        {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
 
     // Ensure the database is created
     context.Database.EnsureCreated();
-}
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-
-    string email = "admin@admin.com";
-    string password = "qweASD1231410!";
-
-    if (await userManager.FindByEmailAsync(email) == null)
-    {
-        var user = new ApplicationUser()
-        {
-            UserName = "admin",
-            Email = "admin@admin.com",
-            FirstName = "Admin",
-            LastName = "Admin",
-            Adress = "Admin",
-            PhoneNumber = "123456789",
-            CreatedAt = DateTime.Now,
-            EmailConfirmed = true
-        };
-        user.UserName = user.Email;
-        user.Email = user.Email;
-
-        await userManager.CreateAsync(user, password);
-        await userManager.AddToRoleAsync(user, "admin");
-    }
+    // Seed users and roles
+    await context.SeedUsers(userManager, roleManager);
 }
 
 app.Run();
